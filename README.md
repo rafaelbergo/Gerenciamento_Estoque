@@ -21,4 +21,4 @@
 
 `source venv/bin/activate  (windows: .\venv\Scripts\activate)`
 
-`pip install django`
+`pip install -r requirements.txt`
