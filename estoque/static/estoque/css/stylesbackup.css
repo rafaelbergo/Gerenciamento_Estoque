@@ -1,0 +1,40 @@
+body {
+    font-family: "DM Sans", "Arial", sans-serif;
+  }
+
+.logo {
+    background-color: transparent;
+    width: 50px;
+    height: 50px;
+    /*margin-right: 15px;
+    text-align: center;
+    font-family: "Madimi One", sans-serif;
+    font-weight: 400;
+    font-style: normal;/*
+    /*padding: 10px 10px;*/
+}
+
+.header {
+    /*display: flex;
+    align-items: center;
+    background-color: rgb(162, 156, 156);    
+    box-sizing: border-box*/
+}
+
+.header a { /* links do header*/
+    text-decoration: none;
+    color: #333; 
+    /*padding: 10px;*/
+    margin-right: 10px;
+    text-align: center;
+}
+  
+.header a:hover { /*links do header ao passar o mouse*/
+    color: #000;
+    background-color: #ddd;
+}
+
+header{
+    background-color: rgb(162, 156, 156);    
+
+}
