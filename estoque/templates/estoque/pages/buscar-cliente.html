@@ -12,27 +12,51 @@
 
     <h2 class="textos">Buscar Cliente:</h2>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Nome</th>
-                <th>Email</th>
-                <th>Telefone</th>
-                <!-- Adicione mais colunas conforme necessário -->
-            </tr>
-        </thead>
-        <tbody>
-            {% for cliente in clientes %}
+    <div class="formulario-busca">
+        <form method="GET" action="{% url 'buscar_cliente' %}">
+            <select name="campo" id="campo">
+                <option value="todos">Todos os clientes</option>
+                <option value="id">ID</option>
+                <option value="nome">Nome</option>
+                <option value="cpf">CPF</option>
+                <option value="email">Email</option>
+                <option value="telefone">Telefone</option>
+                <option value="endereco">Endereço</option>
+                <option value="cidade">Cidade</option>
+                <option value="estado">Estado</option>
+                <option value="cep">CEP</option>
+            </select>
+            <label for="valor">Valor:</label>
+            <input type="text" id="valor" name="valor">
+            <button type="submit">Buscar</button>
+        </form>
+    </div>
+
+    {% if clientes %}
+        <h3>Resultados da busca:</h3>
+        <table>
+            <thead>
                 <tr>
-                    <td>{{ cliente.nome }}</td>
-                    <td>{{ cliente.email }}</td>
-                    <td>{{ cliente.telefone }}</td>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Telefone</th>
                     <!-- Adicione mais colunas conforme necessário -->
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
+            </thead>
+            <tbody>
+                {% for cliente in clientes %}
+                    <tr>
+                        <td>{{ cliente.nome }}</td>
+                        <td>{{ cliente.email }}</td>
+                        <td>{{ cliente.telefone }}</td>
+                        <!-- Adicione mais colunas conforme necessário -->
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Nenhum cliente encontrado.</p>
+    {% endif %}
 
 </body>
 </html>

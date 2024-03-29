@@ -49,5 +49,27 @@ def criar_cliente(request):
     return render(request, 'estoque/pages/criar-cliente.html', {'mensagem': mensagem})
 
 def buscar_cliente(request):
-    clientes = Cliente.objects.all()
-    return render(request, 'estoque/pages/buscar-cliente.html', {'clientes': clientes})
+    campo = request.GET.get('campo')
+    valor = request.GET.get('valor')
+
+    if campo == 'todos':
+        clientes = Cliente.objects.all()
+    else:
+        if campo and valor:
+            filtros = {
+                'id': Cliente.objects.filter(id=valor),
+                'nome': Cliente.objects.filter(nome__icontains=valor),
+                'cpf': Cliente.objects.filter(cpf__icontains=valor),
+                'email': Cliente.objects.filter(email__icontains=valor),
+                'telefone': Cliente.objects.filter(telefone__icontains=valor),
+                'endereco': Cliente.objects.filter(endereco__icontains=valor),
+                'cidade': Cliente.objects.filter(cidade__icontains=valor),
+                'estado': Cliente.objects.filter(estado__icontains=valor),
+                'cep': Cliente.objects.filter(cep__icontains=valor),
+            }
+            clientes = filtros.get(campo, [])
+     
+        else:
+            clientes = []
+
+    return render(request, 'estoque/pages/buscar-cliente.html', {'clientes': clientes, 'campo': campo, 'valor': valor})
