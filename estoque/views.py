@@ -24,7 +24,6 @@ def criar_cliente(request):
         # Obtém os dados do formulário
         nome = request.POST.get('nome')
         email = request.POST.get('email')
-        senha = request.POST.get('senha')
         cpf = request.POST.get('cpf')
         telefone = request.POST.get('telefone')
         endereco = request.POST.get('endereco')
@@ -32,15 +31,19 @@ def criar_cliente(request):
         estado = request.POST.get('estado')
         cep = request.POST.get('cep')
         
-        novo_cliente = Cliente.objects.create(
-            nome=nome,
-            cpf=cpf,
-            email=email,
-            telefone=telefone,
-            endereco=endereco,
-            cidade=cidade,
-            estado=estado,
-            cep=cep
-        )
-        mensagem = "Cliente criado com sucesso!"
+        if nome and cpf:
+            novo_cliente = Cliente.objects.create(
+                nome=nome,
+                cpf=cpf,
+                email=email,
+                telefone=telefone,
+                endereco=endereco,
+                cidade=cidade,
+                estado=estado,
+                cep=cep
+            )
+            mensagem = "Cliente criado com sucesso!"
+        else:
+            mensagem = "Nome e CPF são campos obrigatórios."
+            
     return render(request, 'estoque/pages/criar-cliente.html', {'mensagem': mensagem})
