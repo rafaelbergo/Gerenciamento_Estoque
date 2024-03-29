@@ -19,5 +19,28 @@ def clientes(request):
     return render(request, 'estoque/pages/clientes.html', context)
 
 def criar_cliente(request):
-    context = {}
-    return render(request, 'estoque/pages/criar-cliente.html', context)
+    mensagem = None
+    if request.method == 'POST':
+        # Obtém os dados do formulário
+        nome = request.POST.get('nome')
+        email = request.POST.get('email')
+        senha = request.POST.get('senha')
+        cpf = request.POST.get('cpf')
+        telefone = request.POST.get('telefone')
+        endereco = request.POST.get('endereco')
+        cidade = request.POST.get('cidade')
+        estado = request.POST.get('estado')
+        cep = request.POST.get('cep')
+        
+        novo_cliente = Cliente.objects.create(
+            nome=nome,
+            cpf=cpf,
+            email=email,
+            telefone=telefone,
+            endereco=endereco,
+            cidade=cidade,
+            estado=estado,
+            cep=cep
+        )
+        mensagem = "Cliente criado com sucesso!"
+    return render(request, 'estoque/pages/criar-cliente.html', {'mensagem': mensagem})

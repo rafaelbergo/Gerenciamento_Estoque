@@ -17,7 +17,11 @@
     </div>
     <h2 class="textos">Criar Cliente:</h2>
 
-    <form action="/criar_usuario/" method="post" class="formulario lexend-300">
+    {% if mensagem %}
+        <p class="textos">{{ mensagem }}</p>
+    {% endif %}
+
+    <form action="/clientes/criar" method="post" class="formulario lexend-300">
         {% csrf_token %}
 
         <label for="nome">Nome:</label>
@@ -47,7 +51,7 @@
         <label for="cep">CEP:</label>
         <input type="text" id="cep" name="cep"><br><br>
         
-        <button type="submit">Criar Usuário</button>
+        <button type="submit">Criar Cliente</button>
     </form>
 
 </body>
