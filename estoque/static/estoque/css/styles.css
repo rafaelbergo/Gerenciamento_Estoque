@@ -41,13 +41,50 @@
     border-right: 2px solid rgba(255, 255, 255, 0.87);
 }
 
+.textos {
+    color: black;
+    padding-top: 0px;
+    padding: 10px;
+    padding-left: 20px;
+    font-size: 25px;
+}
+
+.formulario {
+    padding-left: 35px;
+    width: 300px;
+}
+
+.formulario input {
+    width: 100%;
+    padding: 3px;
+    margin-bottom: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.formulario button {
+    width: 90%;
+    margin: 0 auto; /* Centraliza o botão horizontalmente */
+    display: block;
+    padding: 7px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: box-shadow 0.3s;
+}
+
+.formulario button:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
 body {
-    background-color: rgba(107, 104, 104, 0.65); /* cor de fundo da pagina */
+    background-color: rgba(107, 104, 104, 0.45); /* cor de fundo da pagina */
     margin: 0;
     padding: none;
 }
 
-.permanent-marker-regular {
+.permanent-marker-regular { /* fonte do logo */ 
     font-family: "Permanent Marker", cursive;
     font-weight: 400;
     font-style: normal;
@@ -64,5 +101,12 @@ body {
     font-family: "Lexend", sans-serif;
     font-optical-sizing: auto;
     font-weight: 400;
+    font-style: normal;
+}
+
+.lexend-300{ /* fonte dos itens do formulario */
+    font-family: "Lexend", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
     font-style: normal;
 }
