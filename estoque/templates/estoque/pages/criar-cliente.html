@@ -8,13 +8,8 @@
 
 <body>
     {% include "estoque/partials/header.html" %}
-    <div>
-        <nav class="menu-cliente">
-            <a href="/clientes/criar" class="lexend-400">Criar Cliente</a>
-            <a href="/clientes/listar" class="lexend-400">Listar Clientes</a>
-            <a href="/clientes/editar" class="lexend-400">Editar Clientes</a>
-        </nav>
-    </div>
+    {% include "estoque/partials/header-clientes.html" %}
+    
     <h2 class="textos">Criar Cliente:</h2>
 
     {% if mensagem %}

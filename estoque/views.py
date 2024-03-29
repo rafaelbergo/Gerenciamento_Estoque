@@ -45,5 +45,9 @@ def criar_cliente(request):
             mensagem = "Cliente criado com sucesso!"
         else:
             mensagem = "Nome e CPF são campos obrigatórios."
-            
+
     return render(request, 'estoque/pages/criar-cliente.html', {'mensagem': mensagem})
+
+def buscar_cliente(request):
+    clientes = Cliente.objects.all()
+    return render(request, 'estoque/pages/buscar-cliente.html', {'clientes': clientes})

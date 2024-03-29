@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="pt-BR">
+<head>
+    {% include "estoque/partials/head.html" %}
+    <title>{% block title %}Buscar Cliente | Estoque++{% endblock title %}</title>
+</head>
+
+<body>
+    {% include "estoque/partials/header.html" %}
+    {% include "estoque/partials/header-clientes.html" %}
+
+    <h2 class="textos">Buscar Cliente:</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Telefone</th>
+                <!-- Adicione mais colunas conforme necessário -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for cliente in clientes %}
+                <tr>
+                    <td>{{ cliente.nome }}</td>
+                    <td>{{ cliente.email }}</td>
+                    <td>{{ cliente.telefone }}</td>
+                    <!-- Adicione mais colunas conforme necessário -->
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+</body>
+</html>
+
