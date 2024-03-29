@@ -72,4 +72,22 @@ def buscar_cliente(request):
         else:
             clientes = []
 
-    return render(request, 'estoque/pages/buscar-cliente.html', {'clientes': clientes, 'campo': campo, 'valor': valor})
+    campos_opcoes = {
+        'todos': 'Todos os clientes',
+        'id': 'ID',
+        'nome': 'Nome',
+        'cpf': 'CPF',
+        'email': 'Email',
+        'telefone': 'Telefone',
+        'endereco': 'Endereço',
+        'cidade': 'Cidade',
+        'estado': 'Estado',
+        'cep': 'CEP',
+    }
+
+    contexto = {'clientes': clientes, 'campo': campo, 'valor': valor}
+    
+    contexto['opcoes'] = campos_opcoes
+    contexto['campo'] = campo if campo in campos_opcoes else 'todos'
+
+    return render(request, 'estoque/pages/buscar-cliente.html', contexto)
