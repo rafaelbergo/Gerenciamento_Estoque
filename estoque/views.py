@@ -114,5 +114,14 @@ def editar_cliente(request):
             sucesso = True
             cliente = None
 
-
     return render(request, 'estoque/pages/editar-cliente.html', {'cliente': cliente, 'sucesso': sucesso})
+
+def remover_cliente(request, cliente_id):
+    deletado = False
+
+    if request.method == 'POST':
+        cliente = get_object_or_404(Cliente, id=cliente_id)
+        cliente.delete()
+        deletado = True
+
+    return render(request, 'estoque/pages/editar-cliente.html', {'deletado': deletado})

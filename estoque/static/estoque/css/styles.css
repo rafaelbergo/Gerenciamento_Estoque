@@ -199,6 +199,14 @@
     color: #666; /* Cor do texto para campos somente leitura */
 }
 
+.botao {
+    display: flex;
+}
+
+.botao button {
+    margin-left: 10px; /* Espaçamento entre os botões */
+}
+
 body {
     background-color: rgba(107, 104, 104, 0.45); /* cor de fundo da pagina */
     margin: 0;
