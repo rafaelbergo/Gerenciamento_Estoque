@@ -20,6 +20,15 @@
             <button type="submit" class="lexend-300">Editar Cliente</button>
         </form>
     </div>
+
+    {% if sucesso %}
+        <div class="textos">
+            Dados atualizados com sucesso!
+        </div>
+
+        
+    {% endif %}
+
     {% if cliente %}
         <div>
             <h3 class="textos">Dados do Cliente:</h3>
@@ -37,7 +46,7 @@
                 
                     <label for="email">Email:</label>
                     <input type="text" id="email" name="email" value="{{ cliente.email }}"><br><br>
-                    
+
                     <label for="cpf">CPF:</label>
                     <input type="text" id="cpf" name="cpf" value="{{ cliente.cpf }}"><br><br>
                     

@@ -1,5 +1,4 @@
-from urllib import request
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 from estoque.models import Cliente
 
 def home(request):
@@ -95,6 +94,7 @@ def buscar_cliente(request):
 
 def editar_cliente(request):
     cliente = None
+    sucesso = False
     if request.method == 'POST':
         cliente_id = request.POST.get('cliente_id')
         if cliente_id:
@@ -111,5 +111,8 @@ def editar_cliente(request):
             cliente.estado = request.POST.get('estado')
             cliente.cep = request.POST.get('cep')
             cliente.save()
+            sucesso = True
+            cliente = None
 
-    return render(request, 'estoque/pages/editar-cliente.html', {'cliente': cliente})
+
+    return render(request, 'estoque/pages/editar-cliente.html', {'cliente': cliente, 'sucesso': sucesso})
