@@ -161,6 +161,32 @@
     border-top: none;
 }
 
+.formulario-editar {
+    display: flex;
+}
+
+.formulario-editar input {
+    height: max-content;
+    margin-left: 10px;
+    margin-right: 4px;
+}
+
+.formulario-editar button {
+    width: 100px;
+    height: max-content;
+}
+
+.teste input {
+    width: 100%;
+    padding: 3px;
+    margin-bottom: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+
+}
+
+
 body {
     background-color: rgba(107, 104, 104, 0.45); /* cor de fundo da pagina */
     margin: 0;

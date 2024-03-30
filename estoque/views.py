@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from urllib import request
+from django.shortcuts import get_object_or_404, render
 from estoque.models import Cliente
 
 def home(request):
@@ -86,8 +87,25 @@ def buscar_cliente(request):
     }
 
     contexto = {'clientes': clientes, 'campo': campo, 'valor': valor}
-    
+
     contexto['opcoes'] = campos_opcoes
     contexto['campo'] = campo if campo in campos_opcoes else 'todos'
 
     return render(request, 'estoque/pages/buscar-cliente.html', contexto)
+
+def editar_cliente(request):
+    cliente = None
+    if request.method == 'POST':
+        cliente_id = request.POST.get('cliente_id')
+        if cliente_id:
+            cliente = get_object_or_404(Cliente, id=cliente_id)
+        else:
+            cliente_id = request.POST.get('cliente_id_hidden')
+            cliente = get_object_or_404(Cliente, id=cliente_id)
+            cliente.nome = request.POST.get('nome')
+            cliente.cpf = request.POST.get('cpf')
+            # Adicione aqui outros campos do cliente conforme necessário
+            cliente.save()
+            # Redirecionar ou fazer qualquer outra coisa depois de salvar os dados
+
+    return render(request, 'estoque/pages/editar-cliente.html', {'cliente': cliente})

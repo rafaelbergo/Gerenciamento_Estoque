@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="pt-BR">
+<head>
+    {% include "estoque/partials/head.html" %}
+    <title>{% block title %}Editar Cliente | Estoque++{% endblock title %}</title>
+</head>
+
+<body>
+    {% include "estoque/partials/header.html" %}
+    {% include "estoque/partials/header-clientes.html" %}
+    
+    <h2 class="textos">Editar Cliente:</h2>
+
+    <div>
+        <form action="{% url 'editar_cliente' %}" method="POST" class="formulario-busca formulario-editar lexend-300">
+            {% csrf_token %}
+            <label for="cliente_id">Insira o ID do cliente para editar:</label>
+            <input type="text" id="cliente_id" name="cliente_id" required><br><br>
+            <button type="submit" class="lexend-300">Editar Cliente</button>
+        </form>
+    </div>
+    {% if cliente %}
+        <div>
+            <h3 class="textos">Dados do Cliente:</h3>
+            <label for="cliente_id">ID do Cliente:</label>
+            <input type="text" id="cliente_id" name="cliente_id" value="{{ cliente.id }}" readonly class="teste"><br><br>
+            <form action="{% url 'editar_cliente' %}" method="POST" class="formulario-busca formulario-editar lexend-300">
+                {% csrf_token %}
+                <label for="nome">Nome:</label>
+                <input type="text" id="nome" name="nome" value="{{ cliente.nome }}"><br><br>
+                <label for="cpf">CPF:</label>
+                <input type="text" id="cpf" name="cpf" value="{{ cliente.cpf }}"><br><br>
+                <!-- Adicione outros campos do cliente conforme necessário -->
+                <button type="submit" class="lexend-300">Atualizar Dados</button>
+            </form>
+        </div>
+    {% endif %}
+</body>
+</html>
+    
+</body>
+</html>
+
