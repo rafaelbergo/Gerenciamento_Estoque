@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="pt-BR">
+<head>
+    {% include "estoque/partials/head.html" %}
+    <title>{% block title %}Editar Produto | Estoque++{% endblock title %}</title>
+</head>
+
+<body>
+    {% include "estoque/partials/header.html" %}
+    {% include "estoque/partials/header-produtos.html" %}
+    
+    <h2 class="textos">Editar Produto:</h2>
+
+    <div>
+        <form action="{% url 'editar_produto' %}" method="POST" class="formulario-busca formulario-editar lexend-300">
+            {% csrf_token %}
+            <label for="produto_id">Insira o ID do produto para editar:</label>
+            <input type="text" id="produto_id" name="produto_id" required><br><br>
+            <button type="submit" class="lexend-300">Editar Produto</button>
+        </form>
+    </div>
+
+    {% if sucesso %}
+        <div class="textos">
+            Dados atualizados com sucesso!
+        </div>
+    {% endif %}
+
+    {% if deletado %}
+        <div class="textos">
+            Produto removido com sucesso!
+        </div>
+    {% endif %}
+
+    {% if produto %}
+        <div>
+            <h3 class="textos">Dados do Produto:</h3>
+            <div class="campo formulario-busca lexend-300">
+                <label for="produto_id">ID:</label>
+                <input type="text" id="produto_id" name="produto_id" value="{{ produto.id }}" readonly><br><br>
+            </div>
+            <form action="{% url 'editar_produto' %}" method="POST" class="formulario-busca formulario-editar botao lexend-300" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="campo">
+                    <input type="hidden" name="produto_id_hidden" value="{{ produto.id }}" class="formulario-busca lexend-300">
+
+                    <label for="nome">Nome:</label>
+                    <input type="text" id="nome" name="nome" value="{{ produto.nome }}"><br><br>
+                
+                    <label for="preco">Preço:</label>
+                    <input type="text" id="preco" name="preco" value="{{ produto.preco }}"><br><br>
+
+                    <label for="quantidade">Quantidade:</label>
+                    <input type="text" id="quantidade" name="quantidade" value="{{ produto.quantidade }}"><br><br>
+
+                    <label for="descricao">Descrição:</label>
+                    <input type="text" id="descricao" name="descricao" value="{{ produto.descricao }}"><br><br>
+
+                    <label for="categoria">Categoria:</label>
+                    <input type="text" id="categoria" name="categoria" value="{{ produto.categoria }}"><br><br>
+
+                    <label for="marca">Marca:</label>
+                    <input type="text" id="marca" name="marca" value="{{ produto.marca }}"><br><br>
+
+                    <label for="modelo">Modelo:</label>
+                    <input type="text" id="modelo" name="modelo" value="{{ produto.modelo }}"><br><br>
+
+                    <label for="imagem">Imagem:</label>
+                    <input type="file" id="imagem" name="imagem" accept="image/*"><br><br>
+
+                    <button type="submit" class="lexend-300 botao">Atualizar Dados</button>
+                </div>
+            </form>
+
+            <form action="{% url 'remover_produto' produto.id %}" method="POST" class="formulario-busca formulario-editar botao lexend-300">
+                {% csrf_token %}
+                <div class="campo">
+                    <input type="hidden" name="produto_id_hidden" value="{{ produto.id }}">
+                    <button type="submit" class="lexend-300 botao">Remover Produto</button>
+                </div>
+            </form>
+        </div>
+    {% endif %}
+
+</body>
+</html>
+    
+</body>
+</html>

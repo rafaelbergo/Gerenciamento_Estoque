@@ -1,6 +1,9 @@
 import os
 from django.shortcuts import get_object_or_404, redirect, render
 from estoque.models import Cliente, Produto
+from projeto import settings
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
 
 def home(request):
     context = {}
@@ -204,4 +207,59 @@ def buscar_produto(request):
     contexto['opcoes'] = campos_opcoes
     contexto['campo'] = campo if campo in campos_opcoes else 'todos'
 
-    return render(request, 'estoque/pages/produtos/buscar-produto.html', contexto)
+    response = render(request, 'estoque/pages/produtos/buscar-produto.html', contexto)
+    response['Cache-Control'] = 'must-revalidate'
+    return response
+    #return render(request, 'estoque/pages/produtos/buscar-produto.html', contexto)
+
+def editar_produto(request):
+    produto = None
+    sucesso = False
+    if request.method == 'POST':
+        produto_id = request.POST.get('produto_id')
+        if produto_id:
+            produto = get_object_or_404(Produto, id=produto_id)
+        else:
+            produto_id = request.POST.get('produto_id_hidden')
+            produto = get_object_or_404(Produto, id=produto_id)
+            produto.nome = request.POST.get('nome')
+            produto.preco = request.POST.get('preco')
+            produto.quantidade = request.POST.get('quantidade')
+            produto.descricao = request.POST.get('descricao')
+            produto.categoria = request.POST.get('categoria')
+            produto.marca = request.POST.get('marca')
+            produto.modelo = request.POST.get('modelo')
+            imagem = request.FILES.get('imagem')
+
+            if imagem:
+                if produto.imagem: # Verifica se existe uma imagem
+                    caminho_imagem = os.path.join(settings.MEDIA_ROOT, 'produtos', f'{produto_id}.png')
+                    if os.path.exists(caminho_imagem): # Verifica se o arquivo da imagem existe
+                        os.remove(caminho_imagem)
+            
+                nome_imagem = f'{produto_id}.png'
+                caminho_imagem_nova = os.path.join(settings.MEDIA_ROOT, 'produtos', nome_imagem)
+                default_storage.save(caminho_imagem_nova, ContentFile(imagem.read()))
+
+                nome_imagem = f'{produto_id}.{imagem.name.split(".")[-1]}'  # ID_do_produto.formato
+                caminho_imagem_nova = os.path.join(settings.MEDIA_ROOT, 'produtos', nome_imagem)
+                default_storage.save(caminho_imagem_nova, imagem)
+                
+                # Atualize o campo 'imagem' do produto
+                produto.imagem = os.path.join('produtos', nome_imagem)
+
+            produto.save()
+            sucesso = True
+            produto = None
+
+    return render(request, 'estoque/pages/produtos/editar-produto.html', {'produto': produto, 'sucesso': sucesso})
+
+def remover_produto(request, produto_id):
+    deletado = False
+
+    if request.method == 'POST':
+        produto = get_object_or_404(Produto, id=produto_id)
+        produto.delete()
+        deletado = True
+
+    return render(request, 'estoque/pages/produtos/editar-produto.html', {'deletado': deletado})
