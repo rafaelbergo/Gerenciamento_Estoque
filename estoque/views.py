@@ -103,9 +103,13 @@ def editar_cliente(request):
             cliente_id = request.POST.get('cliente_id_hidden')
             cliente = get_object_or_404(Cliente, id=cliente_id)
             cliente.nome = request.POST.get('nome')
+            cliente.email = request.POST.get('email')
             cliente.cpf = request.POST.get('cpf')
-            # Adicione aqui outros campos do cliente conforme necessário
+            cliente.telefone = request.POST.get('telefone')
+            cliente.endereco = request.POST.get('endereco')
+            cliente.cidade = request.POST.get('cidade')
+            cliente.estado = request.POST.get('estado')
+            cliente.cep = request.POST.get('cep')
             cliente.save()
-            # Redirecionar ou fazer qualquer outra coisa depois de salvar os dados
 
     return render(request, 'estoque/pages/editar-cliente.html', {'cliente': cliente})

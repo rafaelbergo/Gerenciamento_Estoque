@@ -23,16 +23,41 @@
     {% if cliente %}
         <div>
             <h3 class="textos">Dados do Cliente:</h3>
-            <label for="cliente_id">ID do Cliente:</label>
-            <input type="text" id="cliente_id" name="cliente_id" value="{{ cliente.id }}" readonly class="teste"><br><br>
+            <div class="campo formulario-busca lexend-300">
+                <label for="cliente_id">ID:</label>
+                <input type="text" id="cliente_id" name="cliente_id" value="{{ cliente.id }}" readonly><br><br>
+            </div>
             <form action="{% url 'editar_cliente' %}" method="POST" class="formulario-busca formulario-editar lexend-300">
                 {% csrf_token %}
-                <label for="nome">Nome:</label>
-                <input type="text" id="nome" name="nome" value="{{ cliente.nome }}"><br><br>
-                <label for="cpf">CPF:</label>
-                <input type="text" id="cpf" name="cpf" value="{{ cliente.cpf }}"><br><br>
-                <!-- Adicione outros campos do cliente conforme necessário -->
-                <button type="submit" class="lexend-300">Atualizar Dados</button>
+                <div class="campo">
+                    <input type="hidden" name="cliente_id_hidden" value="{{ cliente.id }}" class="formulario-busca lexend-300">
+
+                    <label for="nome">Nome:</label>
+                    <input type="text" id="nome" name="nome" value="{{ cliente.nome }}"><br><br>
+                
+                    <label for="email">Email:</label>
+                    <input type="text" id="email" name="email" value="{{ cliente.email }}"><br><br>
+                    
+                    <label for="cpf">CPF:</label>
+                    <input type="text" id="cpf" name="cpf" value="{{ cliente.cpf }}"><br><br>
+                    
+                    <label for="telefone">Telefone:</label>
+                    <input type="text" id="telefone" name="telefone" value="{{ cliente.telefone }}"><br><br>
+
+                    <label for="endereco">Endereço:</label>
+                    <input type="text" id="endereco" name="endereco" value="{{ cliente.endereco }}"><br><br>
+
+                    <label for="cidade">Cidade:</label>
+                    <input type="text" id="cidade" name="cidade" value="{{ cliente.cidade }}"><br><br>
+
+                    <label for="estado">Estado:</label>
+                    <input type="text" id="estado" name="estado" value="{{ cliente.estado }}"><br><br>
+
+                    <label for="cep">CEP:</label>
+                    <input type="text" id="cep" name="cep" value="{{ cliente.cep }}"><br><br>
+
+                    <button type="submit" class="lexend-300">Atualizar Dados</button>
+                </div>
             </form>
         </div>
     {% endif %}

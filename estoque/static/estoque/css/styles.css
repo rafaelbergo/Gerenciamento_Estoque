@@ -176,16 +176,28 @@
     height: max-content;
 }
 
-.teste input {
-    width: 100%;
-    padding: 3px;
-    margin-bottom: 8px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-
+.campo {
+    margin-bottom: 10px;
 }
 
+.campo label {
+    display: inline-block; /* Garante que o rótulo e o campo estejam alinhados corretamente */
+    width: 100px; /* Largura fixa para os rótulos (ajuste conforme necessário) */
+    font-weight: bold;
+}
+
+.campo input {
+    width: 200px; /* Largura dos campos de entrada (ajuste conforme necessário) */
+    padding: 5px; /* Espaçamento interno nos campos */
+    border: 1px solid #ccc; /* Borda dos campos */
+    border-radius: 3px; /* Borda arredondada */
+    box-sizing: border-box;
+}
+
+.campo input[readonly] {
+    background-color: #f0f0f0; /* Cor de fundo para campos somente leitura */
+    color: #666; /* Cor do texto para campos somente leitura */
+}
 
 body {
     background-color: rgba(107, 104, 104, 0.45); /* cor de fundo da pagina */
