@@ -16,7 +16,7 @@ def categorias(request):
 def clientes(request):
     total_clientes = Cliente.objects.all().count()
     context = {'total_clientes': total_clientes}
-    return render(request, 'estoque/pages/clientes.html', context)
+    return render(request, 'estoque/pages/clientes/clientes.html', context)
 
 def criar_cliente(request):
     mensagem = None
@@ -46,7 +46,7 @@ def criar_cliente(request):
         else:
             mensagem = "Nome e CPF são campos obrigatórios."
 
-    return render(request, 'estoque/pages/criar-cliente.html', {'mensagem': mensagem})
+    return render(request, 'estoque/pages/clientes/criar-cliente.html', {'mensagem': mensagem})
 
 def buscar_cliente(request):
     campo = request.GET.get('campo')
@@ -90,7 +90,7 @@ def buscar_cliente(request):
     contexto['opcoes'] = campos_opcoes
     contexto['campo'] = campo if campo in campos_opcoes else 'todos'
 
-    return render(request, 'estoque/pages/buscar-cliente.html', contexto)
+    return render(request, 'estoque/pages/clientes/buscar-cliente.html', contexto)
 
 def editar_cliente(request):
     cliente = None
@@ -114,7 +114,7 @@ def editar_cliente(request):
             sucesso = True
             cliente = None
 
-    return render(request, 'estoque/pages/editar-cliente.html', {'cliente': cliente, 'sucesso': sucesso})
+    return render(request, 'estoque/pages/clientes/editar-cliente.html', {'cliente': cliente, 'sucesso': sucesso})
 
 def remover_cliente(request, cliente_id):
     deletado = False
@@ -124,4 +124,4 @@ def remover_cliente(request, cliente_id):
         cliente.delete()
         deletado = True
 
-    return render(request, 'estoque/pages/editar-cliente.html', {'deletado': deletado})
+    return render(request, 'estoque/pages/clientes/editar-cliente.html', {'deletado': deletado})
