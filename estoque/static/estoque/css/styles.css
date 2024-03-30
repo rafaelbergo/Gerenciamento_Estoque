@@ -136,6 +136,29 @@
 .tabela th, .tabela td {
     padding: 10px;
     padding-top: 3px;
+    border-left: 1px solid #ffffff;
+    border-top: 1px solid #ffffff;
+}
+
+.tabela th:last-child,
+.tabela td:last-child {
+    border-right: 1px solid #ffffff;
+}
+
+.tabela tr:last-child th,
+.tabela tr:last-child td {
+    border-bottom: 1px solid #ffffff;
+}
+
+.tabela tr:first-child th,
+.tabela tr:first-child td {
+    border-bottom: 1px solid #ffffff;
+    
+}
+
+.tabela tr:first-child + tr th,
+.tabela tr:first-child + tr td {
+    border-top: none;
 }
 
 body {
