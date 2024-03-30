@@ -52,7 +52,13 @@
                     <td>{{ produto.categoria }}</td>
                     <td>{{ produto.marca }}</td>
                     <td>{{ produto.modelo }}</td>
-                    <td>{{ produto.imagem }}</td>
+                    <td>
+                        {% if produto.imagem %}
+                            <img src="{{ produto.imagem.url }}" alt="Imagem do Produto" style="max-width: 80px; max-height: 80px;">
+                        {% else %}
+                            Sem imagem
+                        {% endif %}
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
