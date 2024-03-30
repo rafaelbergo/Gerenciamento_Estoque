@@ -74,8 +74,68 @@
     transition: box-shadow 0.3s;
 }
 
-.formulario button:hover {
+.formulario button:hover,
+.formulario-busca button:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.formulario-busca {
+    padding-left: 35px;
+}
+
+.formulario-busca input {
+    margin-left: 5px;
+    padding: 3px;
+    margin-bottom: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.formulario-busca button {
+    margin-left: 5px;
+    padding: 3px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: box-shadow 0.3s;
+}
+
+.formulario-busca select {
+    margin-left: 5px;
+    padding: 3px;
+    margin-bottom: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.formulario-busca select option {
+    padding: 3px;
+    margin-bottom: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.resultado {
+    color: black;
+    padding-top: 0px;
+    padding: 10px;
+    padding-left: 20px;
+    font-size: 20px;
+}
+
+.tabela {
+    font-size: 18px;
+    overflow-x: auto;
+    padding: 15px;
+    padding-top: 0px;
+}
+
+.tabela th, .tabela td {
+    padding: 10px;
+    padding-top: 3px;
 }
 
 body {

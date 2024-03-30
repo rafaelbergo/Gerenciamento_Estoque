@@ -12,7 +12,7 @@
 
     <h2 class="textos">Buscar Cliente:</h2>
 
-    <div class="formulario-busca">
+    <div class="formulario-busca lexend-300">
         <form method="GET" action="{% url 'buscar_cliente' %}">
             <select name="campo" id="campo">
                 {% for campo_opcao, label in opcoes.items %}
@@ -21,36 +21,43 @@
             </select>
             <label for="valor">Valor:</label>
             <input type="text" id="valor" name="valor">
-            <button type="submit">Buscar</button>
+            <button type="submit" class="lexend-300">Buscar</button>
         </form>
     </div>
 
     {% if clientes %}
-        <h3>Resultados da busca:</h3>
-        <table>
+        <h3 class="resultado">Resultados da busca:</h3>
+        <table class="tabela">
             <thead>
                 <tr>
+                    <th>ID</th>
                     <th>Nome</th>
-                    <th>Email</th>
+                    <th>CPF</th>
                     <th>Telefone</th>
-                    <!-- Adicione mais colunas conforme necessário -->
+                    <th>Endereço</th>
+                    <th>Cidade</th>
+                    <th>Estado</th>
+                    <th>CEP</th>
                 </tr>
             </thead>
             <tbody>
                 {% for cliente in clientes %}
-                    <tr>
-                        <td>{{ cliente.nome }}</td>
-                        <td>{{ cliente.email }}</td>
-                        <td>{{ cliente.telefone }}</td>
-                        <!-- Adicione mais colunas conforme necessário -->
-                    </tr>
+                <tr>
+                    <td>{{ cliente.id }}</td>
+                    <td>{{ cliente.nome }}</td>
+                    <td>{{ cliente.cpf }}</td>
+                    <td>{{ cliente.telefone }}</td>
+                    <td>{{ cliente.endereco }}</td>
+                    <td>{{ cliente.cidade }}</td>
+                    <td>{{ cliente.estado }}</td>
+                    <td>{{ cliente.cep }}</td>
+                </tr>
                 {% endfor %}
             </tbody>
         </table>
     {% else %}
-        <p>Nenhum cliente encontrado.</p>
+        <p class="textos">Nenhum cliente encontrado.</p>
     {% endif %}
 
 </body>
 </html>
-
