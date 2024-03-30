@@ -29,9 +29,9 @@ urlpatterns = [
     path('clientes/editar/<int:cliente_id>/', views.remover_cliente, name='remover_cliente'),
 
     path('produtos/', views.produtos, name='produtos'),
-    path('produtos/criar', views.criar_produtos, name='criar_produtos'),
-    #path('produtos/buscar', views.buscar_produtos, name='buscar_produtos'),
-    #path('produtos/editar/', views.editar_produtos, name='editar_produtos'),
+    path('produtos/criar', views.criar_produto, name='criar_produto'),
+    path('produtos/buscar', views.buscar_produto, name='buscar_produto'),
+    #path('produtos/editar/', views.editar_produto, name='editar_produto'),
     #path('produtos/editar/<int:produto_id>/', views.remover_produto, name='remover_produto'),
 
     #path('vendas/', views.categorias, name='categorias'),

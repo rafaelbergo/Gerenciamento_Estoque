@@ -128,7 +128,7 @@ def produtos(request):
     context = {'total_produtos': total_produtos}
     return render(request, 'estoque/pages/produtos/produtos.html', context)
 
-def criar_produtos(request):
+def criar_produto(request):
     mensagem = None
     if request.method == 'POST':
         # Obtém os dados do formulário
@@ -163,3 +163,45 @@ def criar_produtos(request):
             mensagem = "Nome, preço e quantidade são campos obrigatórios."
 
     return render(request, 'estoque/pages/produtos/criar-produto.html', {'mensagem': mensagem})
+
+def buscar_produto(request):
+    campo = request.GET.get('campo')
+    valor = request.GET.get('valor')
+
+    if campo == 'todos':
+        produtos = Produto.objects.all()
+    else:
+        if campo and valor:
+            filtros = {
+                'id': Produto.objects.filter(id=valor),
+                'nome': Produto.objects.filter(nome__icontains=valor),
+                'preco': Produto.objects.filter(preco__icontains=valor),
+                'quantidade': Produto.objects.filter(quantidade__icontains=valor),
+                'descricao': Produto.objects.filter(descricao__icontains=valor),
+                'categoria': Produto.objects.filter(categoria__icontains=valor),
+                'marca': Produto.objects.filter(marca__icontains=valor),
+                'modelo': Produto.objects.filter(modelo__icontains=valor),
+            }
+            produtos = filtros.get(campo, [])
+     
+        else:
+            produtos = []
+
+    campos_opcoes = {
+        'todos': 'Todos os produtos',
+        'id': 'ID',
+        'nome': 'Nome',
+        'preco': 'Preço',
+        'quantidade': 'Quantidade',
+        'descricao': 'Descrição',
+        'categoria': 'Categoria',
+        'marca': 'Marca',
+        'modelo': 'Modelo',    
+    }
+
+    contexto = {'produtos': produtos, 'campo': campo, 'valor': valor}
+
+    contexto['opcoes'] = campos_opcoes
+    contexto['campo'] = campo if campo in campos_opcoes else 'todos'
+
+    return render(request, 'estoque/pages/produtos/buscar-produto.html', contexto)

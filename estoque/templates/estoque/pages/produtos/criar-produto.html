@@ -16,7 +16,7 @@
         <p class="textos">{{ mensagem }}</p>
     {% endif %}
 
-    <form action="{% url 'criar_produtos' %}" method="POST" enctype="multipart/form-data" class="formulario lexend-300">
+    <form action="{% url 'criar_produto' %}" method="POST" enctype="multipart/form-data" class="formulario lexend-300">
         {% csrf_token %}
         <label for="nome">Nome:</label><br>
         <input type="text" id="nome" name="nome" required><br>

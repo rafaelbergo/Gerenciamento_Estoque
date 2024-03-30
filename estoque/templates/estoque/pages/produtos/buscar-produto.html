@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="pt-BR">
+<head>
+    {% include "estoque/partials/head.html" %}
+    <title>{% block title %}Buscar Produto | Estoque++{% endblock title %}</title>
+</head>
+
+<body>
+    {% include "estoque/partials/header.html" %}
+    {% include "estoque/partials/header-produtos.html" %}
+
+    <h2 class="textos">Buscar Produto:</h2>
+
+    <div class="formulario-busca lexend-300">
+        <form method="GET" action="{% url 'buscar_produto' %}">
+            <select name="campo" id="campo">
+                {% for campo_opcao, label in opcoes.items %}
+                    <option value="{{ campo_opcao }}" {% if campo == campo_opcao %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+            <label for="valor">Valor:</label>
+            <input type="text" id="valor" name="valor">
+            <button type="submit" class="lexend-300">Buscar</button>
+        </form>
+    </div>
+
+    {% if produtos %}
+        <h3 class="resultado">Resultados da busca:</h3>
+        <table class="tabela">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Preço</th>
+                    <th>Quantidade</th>
+                    <th>Descrição</th>
+                    <th>Categoria</th>
+                    <th>Marca</th>
+                    <th>Modelo</th>
+                    <th>Imagem</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for produto in produtos %}
+                <tr>
+                    <td>{{ produto.id }}</td>
+                    <td>{{ produto.nome }}</td>
+                    <td>{{ produto.preco }}</td>
+                    <td>{{ produto.quantidade }}</td>
+                    <td>{{ produto.descricao }}</td>
+                    <td>{{ produto.categoria }}</td>
+                    <td>{{ produto.marca }}</td>
+                    <td>{{ produto.modelo }}</td>
+                    <td>{{ produto.imagem }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="textos">Nenhum produto encontrado.</p>
+    {% endif %}
+
+</body>
+</html>
