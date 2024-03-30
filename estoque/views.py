@@ -1,3 +1,4 @@
+import os
 from django.shortcuts import get_object_or_404, redirect, render
 from estoque.models import Cliente, Produto
 
@@ -140,7 +141,7 @@ def criar_produtos(request):
         modelo = request.POST.get('modelo')
         imagem = request.FILES.get('imagem')
         
-        if nome and preco:
+        if nome and preco and quantidade:
             novo_produto = Produto.objects.create(
                 nome=nome,
                 preco=preco,
@@ -149,11 +150,16 @@ def criar_produtos(request):
                 categoria=categoria,
                 marca=marca,
                 modelo=modelo,
-                imagem=imagem
             )
+
+            if imagem:
+                filename, extension = os.path.splitext(imagem.name)
+                imagem.name = f'produtos/{novo_produto.id}{extension}'
+                novo_produto.imagem = imagem
+                novo_produto.save()
             
             mensagem = "Produto criado com sucesso!"
         else:
-            mensagem = "Nome e preço são campos obrigatórios."
+            mensagem = "Nome, preço e quantidade são campos obrigatórios."
 
     return render(request, 'estoque/pages/produtos/criar-produto.html', {'mensagem': mensagem})
