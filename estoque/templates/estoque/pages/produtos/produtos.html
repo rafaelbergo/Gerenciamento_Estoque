@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="pt-BR">
+<head>
+    {% include "estoque/partials/head.html" %}
+    <title>{% block title %}Produtos | Estoque++{% endblock title %}</title>
+</head>
+
+<body>
+    {% include "estoque/partials/header.html" %}
+    {% include "estoque/partials/header-produtos.html" %}
+    
+    <p class="textos lexend-400">Total de produtos cadastrados: {{ total_produtos }}</p>
+</body>
+</html>

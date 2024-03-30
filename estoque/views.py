@@ -1,13 +1,9 @@
 from django.shortcuts import get_object_or_404, redirect, render
-from estoque.models import Cliente
+from estoque.models import Cliente, Produto
 
 def home(request):
     context = {}
     return render(request, 'estoque/pages/home.html', context)
-
-def produtos(request):
-    context = {}
-    return render(request, 'estoque/pages/produtos.html', context)
 
 def categorias(request):
     context = {}
@@ -125,3 +121,39 @@ def remover_cliente(request, cliente_id):
         deletado = True
 
     return render(request, 'estoque/pages/clientes/editar-cliente.html', {'deletado': deletado})
+
+def produtos(request):
+    total_produtos = Produto.objects.all().count()
+    context = {'total_produtos': total_produtos}
+    return render(request, 'estoque/pages/produtos/produtos.html', context)
+
+def criar_produtos(request):
+    mensagem = None
+    if request.method == 'POST':
+        # Obtém os dados do formulário
+        nome = request.POST.get('nome')
+        preco = request.POST.get('preco')
+        quantidade = request.POST.get('quantidade')
+        descricao = request.POST.get('descricao')
+        categoria = request.POST.get('categoria')
+        marca = request.POST.get('marca')
+        modelo = request.POST.get('modelo')
+        imagem = request.FILES.get('imagem')
+        
+        if nome and preco:
+            novo_produto = Produto.objects.create(
+                nome=nome,
+                preco=preco,
+                quantidade=quantidade,
+                descricao=descricao,
+                categoria=categoria,
+                marca=marca,
+                modelo=modelo,
+                imagem=imagem
+            )
+            
+            mensagem = "Produto criado com sucesso!"
+        else:
+            mensagem = "Nome e preço são campos obrigatórios."
+
+    return render(request, 'estoque/pages/produtos/criar-produto.html', {'mensagem': mensagem})

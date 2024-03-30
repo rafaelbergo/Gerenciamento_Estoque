@@ -21,11 +21,22 @@ from estoque import views
 urlpatterns = [
     path('', views.home, name='home'),
     path('admin/', admin.site.urls),
-    #path('produtos/', views.produtos, name='produtos'),
-    #path('vendas/', views.categorias, name='categorias'),
+    
     path('clientes/', views.clientes, name='clientes'),
     path('clientes/criar', views.criar_cliente, name='criar_cliente'),
     path('clientes/buscar', views.buscar_cliente, name='buscar_cliente'),
     path('clientes/editar/', views.editar_cliente, name='editar_cliente'),
     path('clientes/editar/<int:cliente_id>/', views.remover_cliente, name='remover_cliente'),
+
+    path('produtos/', views.produtos, name='produtos'),
+    path('produtos/criar', views.criar_produtos, name='criar_produtos'),
+    #path('produtos/buscar', views.buscar_produtos, name='buscar_produtos'),
+    #path('produtos/editar/', views.editar_produtos, name='editar_produtos'),
+    #path('produtos/editar/<int:produto_id>/', views.remover_produto, name='remover_produto'),
+
+    #path('vendas/', views.categorias, name='categorias'),
+    #path('vendas/criar', views.criar_categoria, name='criar_venda'),
+    #path('vendas/buscar', views.buscar_categoria, name='buscar_venda'),
+    #path('vendas/editar/', views.editar_categoria, name='editar_venda'),
+    #path('vendas/editar/<int:categoria_id>/', views.remover_categoria, name='remover_venda'),
 ]

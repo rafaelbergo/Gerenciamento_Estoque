@@ -7,26 +7,14 @@ class Produto(models.Model):
     preco = models.DecimalField(max_digits=5, decimal_places=2, blank=False)
     quantidade = models.IntegerField(blank=False)
     descricao = models.TextField(max_length=100, blank=True)
-    categoria = models.ForeignKey('Categoria', on_delete=models.CASCADE)
-    marca = models.ForeignKey('Marca', on_delete=models.CASCADE)
+    categoria = models.TextField(max_length=60, blank=True)
+    marca = models.TextField(max_length=40, blank=True)
     modelo = models.CharField(max_length=255, blank=True)
     imagem = models.ImageField(upload_to='produtos/', blank=True)
 
     def __str__(self):
         return self.nome
-
-class Categoria(models.Model):
-    nome = models.CharField(max_length=45, blank=False)
-
-    def __str__(self):
-        return self.nome
-    
-class Marca(models.Model):
-    nome = models.CharField(max_length=45, blank=False)
-
-    def __str__(self):
-        return self.nome
-    
+  
 class Cliente(models.Model):
     nome = models.CharField(max_length=30, blank=False)
     cpf = models.CharField(max_length=14, blank=False)
