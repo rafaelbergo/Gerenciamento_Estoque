@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="pt-BR">
+<head>
+    {% include "estoque/partials/head.html" %}
+    <title>{% block title %}Relatórios | Estoque++{% endblock title %}</title>
+</head>
+
+<body>
+    {% include "estoque/partials/header.html" %}
+    {% include "estoque/partials/header-produtos.html" %}
+
+    <h2 class="textos">Relatórios:<h2>
+     
+        <div style="position: relative;" class="formulario">
+            <button type="button" onclick="alternarFormBaixoEstoque()">Produtos com Baixo Estoque</button>
+        
+            <form action="{% url 'relatorios_produtos' %}" method="POST" id="form-baixo-estoque" style="display: none; position: absolute; top: 50px; left: 0; transition: opacity 0.3s ease-in-out;" class="formulario formulario-busca">
+                {% csrf_token %}
+                <label for="quantidade_minima">Quantidade mínima de produtos:</label>
+                <input type="number" id="quantidade_minima" name="quantidade_minima" required style="width: 150px;" min="0">
+                <button type="submit">Gerar Relatório de Estoque Baixo</button>
+            </form>
+        </div>
+
+    <script>
+        function alternarFormBaixoEstoque() {
+            var formBaixoEstoque = document.getElementById("form-baixo-estoque");
+            if (formBaixoEstoque.style.display === "none") {
+                formBaixoEstoque.style.display = "block";
+            } else {
+                formBaixoEstoque.style.opacity = 0;
+                setTimeout(function() {
+                    formBaixoEstoque.style.display = "none";
+                    formBaixoEstoque.style.opacity = 1;
+                }, 300); // Tempo de espera corresponde à duração da transição
+            }
+        }
+    </script>
+    
+    {% if produtos_com_baixo_estoque %}
+        <h3 class="textos">Produtos com Baixo Estoque:</h3>
+        <table class="tabela">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Preço</th>
+                    <th>Quantidade</th>
+                    <th>Descrição</th>
+                    <th>Categoria</th>
+                    <th>Marca</th>
+                    <th>Modelo</th>
+                    <th>Imagem</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for produto in produtos_com_baixo_estoque %}
+                <tr>
+                    <td>{{ produto.id }}</td>
+                    <td>{{ produto.nome }}</td>
+                    <td>{{ produto.preco }}</td>
+                    <td>{{ produto.quantidade }}</td>
+                    <td>{{ produto.descricao }}</td>
+                    <td>{{ produto.categoria }}</td>
+                    <td>{{ produto.marca }}</td>
+                    <td>{{ produto.modelo }}</td>
+                    <td><img src="{{ produto.imagem.url }}" alt="{{ produto.nome }}" style="width: 100px;"></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</body>
+</html>

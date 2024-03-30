@@ -263,3 +263,22 @@ def remover_produto(request, produto_id):
         deletado = True
 
     return render(request, 'estoque/pages/produtos/editar-produto.html', {'deletado': deletado})
+
+def relatorios_produtos(request):
+    baixo_estoque = False
+    quantidade_minima = None
+    produtos_com_baixo_estoque = None
+
+    if request.method == 'POST':
+        quantidade_minima = request.POST.get('quantidade_minima')
+        if quantidade_minima is not None:  
+            baixo_estoque = True  
+            produtos_com_baixo_estoque = Produto.objects.filter(quantidade__lte=quantidade_minima)
+
+    context = {
+        'baixo_estoque': baixo_estoque,
+        'quantidade_minima': quantidade_minima,
+        'produtos_com_baixo_estoque': produtos_com_baixo_estoque,
+    }
+
+    return render(request, 'estoque/pages/produtos/relatorios-produtos.html', context)
