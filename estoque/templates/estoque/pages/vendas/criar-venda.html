@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="pt-BR">
+<head>
+    {% include "estoque/partials/head.html" %}
+    <title>{% block title %}Criar Venda | Estoque++{% endblock title %}</title>
+</head>
+
+<body>
+    {% include "estoque/partials/header.html" %}
+    {% include "estoque/partials/header-vendas.html" %}
+    
+    <h2 class="textos">Criar Venda:</h2>
+
+    {% if mensagem %}
+        <p class="textos">{{ mensagem }}</p>
+    {% endif %}
+
+    <form action="{% url 'criar_venda' %}" method="POST" class="formulario lexend-300">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="lexend-300">Criar Venda</button>
+    </form>
+
+
+</body>
+</html>

@@ -1,6 +1,7 @@
 import os
 from django.shortcuts import get_object_or_404, redirect, render
-from estoque.models import Cliente, Produto
+from estoque.forms import VendaForm
+from estoque.models import Cliente, ItemVenda, Produto, Venda
 from projeto import settings
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
@@ -282,3 +283,55 @@ def relatorios_produtos(request):
     }
 
     return render(request, 'estoque/pages/produtos/relatorios-produtos.html', context)
+
+
+def vendas(request):
+    total_vendas = Venda.objects.all().count()
+    context = {'total_vendas': total_vendas}
+    return render(request, 'estoque/pages/vendas/vendas.html', context)
+'''
+
+def criar_venda(request):
+    mensagem = None
+
+    if request.method == 'POST':
+        cliente_id = request.POST.get('cliente_id')
+        data = request.POST.get('data')
+        valor = request.POST.get('valor')
+        forma_pagamento = request.POST.get('forma_pagamento')
+        produtos_ids = request.POST.getlist('produtos_ids')
+
+        if cliente_id and data and valor and forma_pagamento and produtos_ids:
+            # Criando a venda
+            nova_venda = Venda.objects.create(
+                cliente_id=cliente_id,
+                data=data,
+                valor=valor,
+                forma_pagamento=forma_pagamento
+            )
+
+            # Adicionando os produtos à venda
+            for produto_id in produtos_ids:
+                item_venda = ItemVenda.objects.create(
+                    venda=nova_venda,
+                    produto_id=produto_id,
+                    quantidade=1  # Defina a quantidade conforme necessário
+                )
+
+            mensagem = "Venda criada com sucesso!"
+        else:
+            mensagem = "Por favor, preencha todos os campos obrigatórios."
+
+    context = {'mensagem': mensagem}
+    return render(request, 'estoque/pages/vendas/criar-venda.html', context)
+'''
+def criar_venda(request):
+    if request.method == 'POST':
+        form = VendaForm(request.POST)
+        if form.is_valid():
+            # Lógica para processar o formulário
+            pass
+    else:
+        form = VendaForm()
+    
+    return render(request, 'estoque/pages/vendas/criar-venda.html', {'form': form})

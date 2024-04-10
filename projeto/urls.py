@@ -37,11 +37,11 @@ urlpatterns = [
     path('produtos/editar/<int:produto_id>/', views.remover_produto, name='remover_produto'),
     path('produtos/relatorios', views.relatorios_produtos, name='relatorios_produtos'),
 
-    #path('vendas/', views.categorias, name='categorias'),
-    #path('vendas/criar', views.criar_categoria, name='criar_venda'),
-    #path('vendas/buscar', views.buscar_categoria, name='buscar_venda'),
-    #path('vendas/editar/', views.editar_categoria, name='editar_venda'),
-    #path('vendas/editar/<int:categoria_id>/', views.remover_categoria, name='remover_venda'),
+    path('vendas/', views.vendas, name='vendas'),
+    path('vendas/criar', views.criar_venda, name='criar_venda'),
+    #path('vendas/buscar', views.buscar_venda, name='buscar_venda'),
+    #path('vendas/editar/', views.editar_venda, name='editar_venda'),
+    #path('vendas/editar/<int:venda_id>/', views.remover_venda, name='remover_venda'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
