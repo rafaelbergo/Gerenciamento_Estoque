@@ -7,6 +7,8 @@
 </head>
 
 <body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    
     {% include "estoque/partials/header.html" %}
     {% include "estoque/partials/header-vendas.html" %}
     
@@ -16,12 +18,42 @@
         <p class="textos">{{ mensagem }}</p>
     {% endif %}
 
+    <button id="buscarClienteBtn" class="lexend-300">Buscar Cliente</button>
+
     <form action="{% url 'criar_venda' %}" method="POST" class="formulario lexend-300">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="lexend-300">Criar Venda</button>
     </form>
-
+    
+    <script>
+        $(document).ready(function() {
+            $('#buscarClienteBtn').click(function() {
+                var cpf = $('#id_cpf').val();
+                if (cpf) {
+                    $.ajax({
+                        url: "/buscar-cliente-venda/",  // URL correspondente à view buscar_cliente_venda
+                        type: "GET",
+                        data: {'valor': cpf},
+                        success: function(response) {
+                            if (!response.error) {
+                                $('#id_nome_cliente').val(response.nome_cliente);
+                                $('#id_endereco').val(response.endereco);
+                                $('#id_cep').val(response.cep);
+                            } else {
+                                alert(response.error);
+                            }
+                        },
+                        error: function(xhr, errmsg, err) {
+                            alert('Erro ao buscar cliente.');
+                        }
+                    });
+                } else {
+                    alert('Por favor, insira um CPF antes de buscar o cliente.');
+                }
+            });
+        });
+    </script>
 
 </body>
 </html>
