@@ -325,6 +325,18 @@ def buscar_cliente_venda(request):
     return JsonResponse({'error': 'Requisição inválida'})
 
 
+def buscar_produto_venda(request):
+    if request.method == 'GET':
+        produto_id = request.GET.get('id')
+        if produto_id:
+            produto = Produto.objects.get(pk=produto_id)
+            if produto:
+                return JsonResponse({'nome': produto.nome, 'preco': produto.preco})
+            else:
+                return JsonResponse({'error': 'Produto não encontrado'})
+    return JsonResponse({'error': 'Requisição inválida'})
+
+
 def criar_venda(request):
     if request.method == 'POST':
         form = VendaForm(request.POST)
