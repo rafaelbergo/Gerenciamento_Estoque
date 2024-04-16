@@ -1,6 +1,24 @@
 import datetime
 from django import forms
 
+
+class BuscarClienteForm(forms.Form):
+    campo = forms.ChoiceField(choices=[
+        ('todos', 'Todos os clientes'),
+        ('id', 'ID'),
+        ('nome', 'Nome'),
+        ('cpf', 'CPF'),
+        ('email', 'Email'),
+        ('telefone', 'Telefone'),
+        ('endereco', 'Endereço'),
+        ('cidade', 'Cidade'),
+        ('estado', 'Estado'),
+        ('cep', 'CEP'),
+    ])
+    valor = forms.CharField(required=False)
+
+
+
 class VendaForm(forms.Form):
     # Dados do cliente
     cpf = forms.CharField(label='CPF do Cliente', max_length=14, widget=forms.TextInput(attrs={'placeholder': 'XXX.XXX.XXX-XX', 'pattern': '[0-9]{11}', 'title': 'Digite apenas números'}))

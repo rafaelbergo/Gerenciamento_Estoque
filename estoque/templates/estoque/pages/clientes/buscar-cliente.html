@@ -15,7 +15,7 @@
     <div class="formulario-busca lexend-300">
         <form method="GET" action="{% url 'buscar_cliente' %}">
             <select name="campo" id="campo">
-                {% for campo_opcao, label in opcoes.items %}
+                {% for campo_opcao, label in opcoes %}
                     <option value="{{ campo_opcao }}" {% if campo == campo_opcao %}selected{% endif %}>{{ label }}</option>
                 {% endfor %}
             </select>

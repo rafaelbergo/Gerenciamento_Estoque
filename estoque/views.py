@@ -1,6 +1,6 @@
 import os
 from django.shortcuts import get_object_or_404, redirect, render
-from estoque.forms import VendaForm
+from estoque.forms import BuscarClienteForm, VendaForm
 from estoque.models import Cliente, ItemVenda, Produto, Venda
 from projeto import settings
 from django.core.files.storage import default_storage
@@ -50,46 +50,31 @@ def criar_cliente(request):
     return render(request, 'estoque/pages/clientes/criar-cliente.html', {'mensagem': mensagem})
 
 def buscar_cliente(request):
-    campo = request.GET.get('campo')
-    valor = request.GET.get('valor')
+    form = BuscarClienteForm(request.GET)
+    clientes = []
 
-    if campo == 'todos':
-        clientes = Cliente.objects.all()
-    else:
-        if campo and valor:
-            filtros = {
-                'id': Cliente.objects.filter(id=valor),
-                'nome': Cliente.objects.filter(nome__icontains=valor),
-                'cpf': Cliente.objects.filter(cpf__icontains=valor),
-                'email': Cliente.objects.filter(email__icontains=valor),
-                'telefone': Cliente.objects.filter(telefone__icontains=valor),
-                'endereco': Cliente.objects.filter(endereco__icontains=valor),
-                'cidade': Cliente.objects.filter(cidade__icontains=valor),
-                'estado': Cliente.objects.filter(estado__icontains=valor),
-                'cep': Cliente.objects.filter(cep__icontains=valor),
-            }
-            clientes = filtros.get(campo, [])
-     
+    if form.is_valid():
+        campo = form.cleaned_data['campo']
+        valor = form.cleaned_data['valor']
+
+        if campo == 'todos':
+            clientes = Cliente.objects.all()
         else:
-            clientes = []
+            if campo and valor:
+                filtros = {
+                    'id': Cliente.objects.filter(id=valor),
+                    'nome': Cliente.objects.filter(nome__icontains=valor),
+                    'cpf': Cliente.objects.filter(cpf__icontains=valor),
+                    'email': Cliente.objects.filter(email__icontains=valor),
+                    'telefone': Cliente.objects.filter(telefone__icontains=valor),
+                    'endereco': Cliente.objects.filter(endereco__icontains=valor),
+                    'cidade': Cliente.objects.filter(cidade__icontains=valor),
+                    'estado': Cliente.objects.filter(estado__icontains=valor),
+                    'cep': Cliente.objects.filter(cep__icontains=valor),
+                }
+                clientes = filtros.get(campo, [])
 
-    campos_opcoes = {
-        'todos': 'Todos os clientes',
-        'id': 'ID',
-        'nome': 'Nome',
-        'cpf': 'CPF',
-        'email': 'Email',
-        'telefone': 'Telefone',
-        'endereco': 'Endereço',
-        'cidade': 'Cidade',
-        'estado': 'Estado',
-        'cep': 'CEP',
-    }
-
-    contexto = {'clientes': clientes, 'campo': campo, 'valor': valor}
-
-    contexto['opcoes'] = campos_opcoes
-    contexto['campo'] = campo if campo in campos_opcoes else 'todos'
+    contexto = {'form': form, 'clientes': clientes, 'opcoes': form.fields['campo'].choices}
 
     return render(request, 'estoque/pages/clientes/buscar-cliente.html', contexto)
 
