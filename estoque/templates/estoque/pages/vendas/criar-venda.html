@@ -102,7 +102,7 @@
                 var produtoId = $('#id_produto').val();
                 if (produtoId) {
                     $.ajax({
-                        url: "/buscar-produto/",  // URL correspondente à view para buscar o produto
+                        url: "/buscar-produto-venda/",  // URL correspondente à view para buscar o produto
                         type: "GET",
                         data: {'id': produtoId},
                         success: function(response) {
