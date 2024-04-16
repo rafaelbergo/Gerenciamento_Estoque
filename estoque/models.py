@@ -44,9 +44,9 @@ class Fornecedor(models.Model):
 class Venda(models.Model):
     cliente = models.ForeignKey('Cliente', on_delete=models.CASCADE)
     data = models.DateField(auto_now_add=True)
-    valor = models.DecimalField(max_digits=5, decimal_places=2, blank=False)
+    valor = models.DecimalField(max_digits=10, decimal_places=2, blank=False)
     produtos = models.ManyToManyField('Produto', through='ItemVenda')
-    desconto = models.DecimalField(max_digits=5, decimal_places=3, blank=True, null=True)
+    desconto = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     opcoes_pagamento = (
         ('DINHEIRO', 'Dinheiro'),
         ('PIX', 'PIX'),

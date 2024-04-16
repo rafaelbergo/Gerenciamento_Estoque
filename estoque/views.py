@@ -338,13 +338,36 @@ def buscar_produto_venda(request):
 
 
 def criar_venda(request):
+    form = VendaForm()
     if request.method == 'POST':
-        form = VendaForm(request.POST)
-        if form.is_valid():
-            # Lógica para processar o formulário
-            pass
-    else:
-        form = VendaForm()
-    
-    return render(request, 'estoque/pages/vendas/criar-venda.html', {'form': form})
+        cpf = request.POST.get('cpf')
+        data = request.POST.get('data')
+        produto_id = request.POST.get('produto_id')
+        quantidade = request.POST.get('quantidade')
+        desconto = request.POST.get('desconto')
+        forma_pagamento = request.POST.get('forma_pagamento')
 
+        cliente = Cliente.objects.get(cpf=cpf)
+        produto = Produto.objects.get(pk=produto_id)
+
+        preco_unitario = produto.preco
+        preco_total = int(quantidade) * float(preco_unitario)
+
+        if desconto:
+            preco_total = float(preco_total) * (1 - float(desconto) / 100)
+        else:
+            preco_total = preco_total
+
+        venda = Venda(cliente=cliente, data=data, valor=preco_total, desconto=desconto, forma_pagamento=forma_pagamento)
+        venda.save()
+
+        item_venda = ItemVenda(venda=venda, produto=produto, quantidade=quantidade, valor_unitario=preco_unitario)
+        item_venda.save()  
+
+        # Atualiza o estoque do produto
+        produto.quantidade -= int(quantidade)
+        produto.save()
+
+        return render(request, 'estoque/pages/vendas/criar-venda.html', {'form': form})
+    else:
+        return render(request, 'estoque/pages/vendas/criar-venda.html', {'form': form})
