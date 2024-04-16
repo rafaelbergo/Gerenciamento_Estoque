@@ -25,6 +25,7 @@
             {{ form.cpf }}
             <button id="buscarClienteBtn" type="button" class="lexend-300">Buscar Cliente</button>
         </div>
+
         <p>Dados do Cliente: </p>
         <div class="form-group">
             {{ form.nome_cliente.label_tag }}
@@ -38,6 +39,25 @@
             {{ form.cep.label_tag }}
             {{ form.cep }}
         </div>
+
+        <p>Dados dos Produtos:</p>
+        <div class="form-group">
+            {{ form.produto_id.label_tag }}
+            {{ form.produto_id }}
+            <button id="buscarProdutoBtn" type="button">Buscar Produto</button>   
+        </div>
+        <div class="form-group">
+            {{ form.produto_nome.label_tag }}
+            {{ form.produto_nome }}
+        </div>
+        <div class="form-group">
+            {{ form.produto_preco.label_tag }}
+            {{ form.produto_preco }}
+        </div>
+
+
+
+        <p>Dados da Venda</p>
         <div class="form-group">
             {{ form.data.label_tag }}
             {{ form.data }}
@@ -45,7 +65,7 @@
         <div class="form-group">
             {{ form.valor.label_tag }}
             {{ form.valor }}
-        </div>
+
         <button type="submit" class="lexend-300">Criar Venda</button>
     </form>
     
@@ -73,6 +93,31 @@
                     });
                 } else {
                     alert('Por favor, insira um CPF antes de buscar o cliente.');
+                }
+            });
+        });
+
+        $(document).ready(function() {
+            $('#buscarProdutoBtn').click(function() {
+                var produtoId = $('#id_produto').val();
+                if (produtoId) {
+                    $.ajax({
+                        url: "/buscar-produto/",  // URL correspondente à view para buscar o produto
+                        type: "GET",
+                        data: {'id': produtoId},
+                        success: function(response) {
+                            if (!response.error) {
+                                $('#produtoDetalhes').html(response);
+                            } else {
+                                alert(response.error);
+                            }
+                        },
+                        error: function(xhr, errmsg, err) {
+                            alert('Erro ao buscar produto.');
+                        }
+                    });
+                } else {
+                    alert('Por favor, insira o ID do produto antes de buscar.');
                 }
             });
         });

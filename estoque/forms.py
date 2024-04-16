@@ -1,6 +1,8 @@
 import datetime
 from django import forms
 
+from estoque.models import Produto
+
 
 class BuscarClienteForm(forms.Form):
     campo = forms.ChoiceField(choices=[
@@ -26,15 +28,19 @@ class VendaForm(forms.Form):
     cep = forms.CharField(label='CEP', required=False, widget=forms.TextInput(attrs={'readonly': True}))
     buscar_cliente = forms.CharField(label='', widget=forms.HiddenInput(), required=False)
 
+    # Dados dos produtos
+    produto_id = forms.IntegerField(label='ID do Produto', required=False)
+    produto_nome = forms.CharField(label='Nome do Produto', required=False, widget=forms.TextInput(attrs={'readonly': True}))
+    produto_preco = forms.DecimalField(label='Preço do Produto', required=False, widget=forms.TextInput(attrs={'readonly': True}))
     
-
     # Dados da venda
     data = forms.DateField(label='Data', widget=forms.DateInput(attrs={'type': 'date'}), initial=datetime.date.today)
-    valor = forms.DecimalField(label='Valor', min_value=0, decimal_places=2)
+    quantidade = forms.IntegerField(label='Quantidade', min_value=1, required=False)
 
-
-
-    #forma_pagamento = forms.ChoiceField(label='Forma de Pagamento', choices=OPCOES_PAGAMENTO)
-    #produtos = forms.ModelMultipleChoiceField(label='Produtos', queryset=Produto.objects.all())
-    #quantidades = forms.IntegerField(label='Quantidades', min_value=1)
-    #valores_unitarios = forms.DecimalField(label='Valores Unitários', min_value=0, decimal_places=2)
+    # Dados do pagamento
+    opcoes_pagamento = (
+        ('DINHEIRO', 'Dinheiro'),
+        ('PIX', 'PIX'),
+        ('CARTAO', 'Cartão'),
+    )
+    forma_pagamento = forms.ChoiceField(label='Forma de Pagamento', choices=opcoes_pagamento)
