@@ -20,13 +20,13 @@
 
     <form action="{% url 'criar_venda' %}" method="POST" class="formulario lexend-300">
         {% csrf_token %}
+        <p>Dados do Cliente: </p>
         <div class="form-group">
             {{ form.cpf.label_tag }}
             {{ form.cpf }}
             <button id="buscarClienteBtn" type="button" class="lexend-300">Buscar Cliente</button>
         </div>
-
-        <p>Dados do Cliente: </p>
+        <p></p>
         <div class="form-group">
             {{ form.nome_cliente.label_tag }}
             {{ form.nome_cliente }}
@@ -44,8 +44,9 @@
         <div class="form-group">
             {{ form.produto_id.label_tag }}
             {{ form.produto_id }}
-            <button id="buscarProdutoBtn" type="button">Buscar Produto</button>   
+            <button id="buscarProdutoBtn" class="lexend-300" type="button">Buscar Produto</button>   
         </div>
+        <p></p>
         <div class="form-group">
             {{ form.produto_nome.label_tag }}
             {{ form.produto_nome }}
@@ -54,22 +55,34 @@
             {{ form.produto_preco.label_tag }}
             {{ form.produto_preco }}
         </div>
-
-
-        <p>Dados da Venda</p>
         <div class="form-group">
-            {{ form.data.label_tag }}
-            {{ form.data }}
+            {{ form.produto_estoque.label_tag }}
+            {{ form.produto_estoque }}
+        </div>
+
+        <p>Dados da Venda:</p>
+        <div class="form-group">
+            {{ form.quantidade.label_tag }}
+            {{ form.quantidade }}
         </div>
         <div class="form-group">
-            {{ form.valor.label_tag }}
-            {{ form.valor }}
-
+            {{ form.preco_total.label_tag }}
+            {{ form.preco_total }}
+        </div>
+        <div class="form-group">
+            {{ form.desconto.label_tag }}
+            {{ form.desconto }}
+        </div>
+        <div class="form-group">
+            {{ form.forma_pagamento.label_tag }}
+            {{ form.forma_pagamento }}
+        </div>
+        <p></p>
         <button type="submit" class="lexend-300">Criar Venda</button>
     </form>
     
     <script>
-        $(document).ready(function() {
+        $(document).ready(function() { // Script para buscar cliente a partir do CPF
             $('#buscarClienteBtn').click(function() {
                 var cpf = $('#id_cpf').val();
                 if (cpf) {
@@ -96,7 +109,7 @@
             });
         });
 
-        $(document).ready(function() {
+        $(document).ready(function() { // Script para buscar o produto a partir do ID
             $('#buscarProdutoBtn').click(function() {
                 var produtoId = $('#id_produto_id').val();
                 if (produtoId) {
@@ -109,6 +122,7 @@
                                 // Preencher os campos do formulário com os dados do produto
                                 $('#id_produto_nome').val(response.nome);
                                 $('#id_produto_preco').val(response.preco);
+                                $('#id_produto_estoque').val(response.estoque);
                             } else {
                                 alert(response.error);
                             }
@@ -119,6 +133,31 @@
                     });
                 } else {
                     alert('Por favor, insira o ID do produto antes de buscar.');
+                }
+            });
+        });
+
+        $(document).ready(function() { // Script para calcular o preço total da venda
+            $('#id_quantidade, #id_desconto').on('input', function() {
+                var quantidade = parseInt($('#id_quantidade').val());
+                var estoque = parseInt($('#id_produto_estoque').val());
+                var precoUnitario = parseFloat($('#id_produto_preco').val());
+                var desconto = parseFloat($('#id_desconto').val());
+
+                if (!isNaN(quantidade) && !isNaN(precoUnitario) && !isNaN(desconto)) {
+                    if (quantidade > estoque) {
+                        alert('Quantidade excede o estoque disponível.');
+                        $('#id_quantidade').val(''); // Limpar o campo de quantidade
+                    } else {
+                        var precoTotal = quantidade * precoUnitario;
+                        if (desconto >= 0 && desconto <= 100) {
+                            var precoComDesconto = precoTotal * (1 - desconto / 100);
+                            $('#id_preco_total').val(precoComDesconto.toFixed(2));
+                        }
+                        else
+                            $('#id_preco_total').val(precoTotal.toFixed(2));
+                        
+                    }
                 }
             });
         });

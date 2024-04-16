@@ -331,7 +331,7 @@ def buscar_produto_venda(request):
         if produto_id:
             produto = Produto.objects.get(pk=produto_id)
             if produto:
-                return JsonResponse({'nome': produto.nome, 'preco': produto.preco})
+                return JsonResponse({'nome': produto.nome, 'preco': produto.preco, 'estoque': produto.quantidade})
             else:
                 return JsonResponse({'error': 'Produto não encontrado'})
     return JsonResponse({'error': 'Requisição inválida'})

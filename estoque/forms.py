@@ -32,12 +32,13 @@ class VendaForm(forms.Form):
     produto_id = forms.IntegerField(label='ID do Produto', required=False)
     produto_nome = forms.CharField(label='Nome do Produto', required=False, widget=forms.TextInput(attrs={'readonly': True}))
     produto_preco = forms.DecimalField(label='Preço do Produto', required=False, widget=forms.TextInput(attrs={'readonly': True}))
+    produto_estoque = forms.IntegerField(label='Quantidade em Estoque', required=False, widget=forms.TextInput(attrs={'readonly': True}))
     
     # Dados da venda
     data = forms.DateField(label='Data', widget=forms.DateInput(attrs={'type': 'date'}), initial=datetime.date.today)
-    quantidade = forms.IntegerField(label='Quantidade', min_value=1, required=False)
-
-    # Dados do pagamento
+    quantidade = forms.IntegerField(label='Quantidade', min_value=1, widget=forms.NumberInput(attrs={'class': 'form-control'}))
+    preco_total = forms.DecimalField(label='Preço Total', decimal_places=2, disabled=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    desconto = forms.DecimalField(label='Desconto em %', decimal_places=3, required=False, min_value=0, max_value=100,widget=forms.NumberInput(attrs={'class': 'form-control'}))
     opcoes_pagamento = (
         ('DINHEIRO', 'Dinheiro'),
         ('PIX', 'PIX'),

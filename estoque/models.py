@@ -46,6 +46,7 @@ class Venda(models.Model):
     data = models.DateField(auto_now_add=True)
     valor = models.DecimalField(max_digits=5, decimal_places=2, blank=False)
     produtos = models.ManyToManyField('Produto', through='ItemVenda')
+    desconto = models.DecimalField(max_digits=5, decimal_places=3, blank=True, null=True)
     opcoes_pagamento = (
         ('DINHEIRO', 'Dinheiro'),
         ('PIX', 'PIX'),
