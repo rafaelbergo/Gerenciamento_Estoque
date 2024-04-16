@@ -144,19 +144,30 @@
                 var precoUnitario = parseFloat($('#id_produto_preco').val());
                 var desconto = parseFloat($('#id_desconto').val());
 
-                if (!isNaN(quantidade) && !isNaN(precoUnitario) && !isNaN(desconto)) {
+                if (!isNaN(quantidade) && !isNaN(precoUnitario)) {
                     if (quantidade > estoque) {
                         alert('Quantidade excede o estoque disponível.');
                         $('#id_quantidade').val(''); // Limpar o campo de quantidade
-                    } else {
+                    } 
+                    else if (quantidade <= 0) {
+                        alert('Quantidade deve ser um valor positivo.');
+                        $('#id_quantidade').val(''); // Limpar o campo de quantidade
+                    }
+                    else {
                         var precoTotal = quantidade * precoUnitario;
-                        if (desconto >= 0 && desconto <= 100) {
-                            var precoComDesconto = precoTotal * (1 - desconto / 100);
-                            $('#id_preco_total').val(precoComDesconto.toFixed(2));
+                        if (!isNaN(desconto)) {
+                            if(desconto >= 0 && desconto <= 100){
+                                var precoComDesconto = precoTotal * (1 - desconto / 100);
+                                $('#id_preco_total').val(precoComDesconto.toFixed(2));
+                            }
+                            else{
+                                alert('Desconto deve ser um valor entre 0 e 100.');
+                                $('#id_desconto').val(''); // Limpar o campo de desconto
+                            }
                         }
-                        else
+                        else {
                             $('#id_preco_total').val(precoTotal.toFixed(2));
-                        
+                        }
                     }
                 }
             });
