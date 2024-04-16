@@ -18,13 +18,13 @@ class BuscarClienteForm(forms.Form):
     valor = forms.CharField(required=False)
 
 
-
 class VendaForm(forms.Form):
     # Dados do cliente
     cpf = forms.CharField(label='CPF do Cliente', max_length=14, widget=forms.TextInput(attrs={'placeholder': 'XXX.XXX.XXX-XX', 'pattern': '[0-9]{11}', 'title': 'Digite apenas números'}))
     nome_cliente = forms.CharField(label='Nome do Cliente', required=False, widget=forms.TextInput(attrs={'readonly': True}))
     endereco = forms.CharField(label='Endereço', required=False, widget=forms.TextInput(attrs={'readonly': True}))
     cep = forms.CharField(label='CEP', required=False, widget=forms.TextInput(attrs={'readonly': True}))
+    buscar_cliente = forms.CharField(label='', widget=forms.HiddenInput(), required=False)
 
     
 

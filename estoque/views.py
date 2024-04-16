@@ -1,4 +1,5 @@
 import os
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from estoque.forms import BuscarClienteForm, VendaForm
 from estoque.models import Cliente, ItemVenda, Produto, Venda
@@ -310,6 +311,20 @@ def criar_venda(request):
     context = {'mensagem': mensagem}
     return render(request, 'estoque/pages/vendas/criar-venda.html', context)
 '''
+
+
+def buscar_cliente_venda(request):
+    if request.method == 'GET':
+        cpf = request.GET.get('valor')
+        if cpf:
+            cliente = Cliente.objects.filter(cpf=cpf).first()
+            if cliente:
+                return JsonResponse({'nome_cliente': cliente.nome, 'endereco': cliente.endereco, 'cep': cliente.cep})
+            else:
+                return JsonResponse({'error': 'Cliente não encontrado'})
+    return JsonResponse({'error': 'Requisição inválida'})
+
+
 def criar_venda(request):
     if request.method == 'POST':
         form = VendaForm(request.POST)
@@ -320,3 +335,4 @@ def criar_venda(request):
         form = VendaForm()
     
     return render(request, 'estoque/pages/vendas/criar-venda.html', {'form': form})
+
