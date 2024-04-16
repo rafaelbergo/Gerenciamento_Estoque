@@ -56,7 +56,6 @@
         </div>
 
 
-
         <p>Dados da Venda</p>
         <div class="form-group">
             {{ form.data.label_tag }}
@@ -99,7 +98,7 @@
 
         $(document).ready(function() {
             $('#buscarProdutoBtn').click(function() {
-                var produtoId = $('#id_produto').val();
+                var produtoId = $('#id_produto_id').val();
                 if (produtoId) {
                     $.ajax({
                         url: "/buscar-produto-venda/",  // URL correspondente à view para buscar o produto
@@ -107,7 +106,9 @@
                         data: {'id': produtoId},
                         success: function(response) {
                             if (!response.error) {
-                                $('#produtoDetalhes').html(response);
+                                // Preencher os campos do formulário com os dados do produto
+                                $('#id_produto_nome').val(response.nome);
+                                $('#id_produto_preco').val(response.preco);
                             } else {
                                 alert(response.error);
                             }
