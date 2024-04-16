@@ -18,11 +18,34 @@
         <p class="textos">{{ mensagem }}</p>
     {% endif %}
 
-    <button id="buscarClienteBtn" class="lexend-300">Buscar Cliente</button>
-
     <form action="{% url 'criar_venda' %}" method="POST" class="formulario lexend-300">
         {% csrf_token %}
-        {{ form.as_p }}
+        <div class="form-group">
+            {{ form.cpf.label_tag }}
+            {{ form.cpf }}
+            <button id="buscarClienteBtn" type="button" class="lexend-300">Buscar Cliente</button>
+        </div>
+        <p>Dados do Cliente: </p>
+        <div class="form-group">
+            {{ form.nome_cliente.label_tag }}
+            {{ form.nome_cliente }}
+        </div>
+        <div class="form-group">
+            {{ form.endereco.label_tag }}
+            {{ form.endereco }}
+        </div>
+        <div class="form-group">
+            {{ form.cep.label_tag }}
+            {{ form.cep }}
+        </div>
+        <div class="form-group">
+            {{ form.data.label_tag }}
+            {{ form.data }}
+        </div>
+        <div class="form-group">
+            {{ form.valor.label_tag }}
+            {{ form.valor }}
+        </div>
         <button type="submit" class="lexend-300">Criar Venda</button>
     </form>
     
