@@ -411,3 +411,13 @@ def buscar_venda(request):
 
     return render(request, 'estoque/pages/vendas/buscar-venda.html', contexto)
 
+def relatorios_vendas(request):
+    context = {}
+    if request.method == 'POST':
+        if 'vendas_diarias' in request.POST:
+            # Lógica para gerar o relatório de vendas diárias/mensais/anuais
+            context['relatorio'] = 'vendas_diarias'
+        elif 'produtos_mais_vendidos' in request.POST:
+            # Lógica para gerar o relatório de produtos mais vendidos
+            context['relatorio'] = 'produtos_mais_vendidos'
+    return render(request, 'estoque/pages/vendas/relatorios-vendas.html', context)

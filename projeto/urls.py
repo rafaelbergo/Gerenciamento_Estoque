@@ -42,7 +42,7 @@ urlpatterns = [
     path('buscar-cliente-venda/', views.buscar_cliente_venda, name='buscar_cliente_venda'),
     path('buscar-produto-venda/', views.buscar_produto_venda, name='buscar_produto_venda'),
     path('vendas/buscar/', views.buscar_venda, name='buscar_venda'),
-    #path('vendas/editar/<int:venda_id>/', views.remover_venda, name='remover_venda'),
+    path('vendas/relatorios', views.relatorios_vendas, name='relatorios_vendas'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="pt-BR">
+<head>
+    {% include "estoque/partials/head.html" %}
+    <title>{% block title %}Relatórios | Estoque++{% endblock title %}</title>
+    <style>
+        #periodoForm {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    {% include "estoque/partials/header.html" %}
+    {% include "estoque/partials/header-vendas.html" %}
+
+    <h2 class="textos">Relatórios:</h2>
+
+    <div class="formulario" style="display: flex; justify-content: space-between;">
+        <form method="post">
+            {% csrf_token %}
+            <button type="button" name="vendas_diarias" class="lexend-300" style="width: 180px;" onclick="togglePeriodoForm()">Relatório de Vendas Por Período</button>
+        </form>
+        
+        <form method="post" style="margin-left: 15px;">
+            {% csrf_token %}
+            <button type="submit" name="produtos_mais_vendidos" class="lexend-300" style="width: 180px;">Relatório de Produtos Mais Vendidos</button>
+        </form>
+    </div>
+
+    <div class="opcoes-relatorio" id="periodoForm" style="display: none; padding: 20px;">
+        <form method="post">
+            {% csrf_token %}
+            <select name="periodo" class="lexend-300">
+                <option value="dia_atual">Dia Atual</option>
+                <option value="ultimos_7_dias">Últimos 7 Dias</option>
+                <option value="ultimos_30_dias">Últimos 30 Dias</option>
+                <option value="ultimos_365_dias">Últimos 365 Dias</option>
+            </select>
+            <button type="submit" name="geral_relatorio" class="lexend-300">Gerar Relatório</button>
+        </form>
+    </div>
+
+    {% if relatorio and relatorio != 'geral_relatorio' %}
+    <div class="relatorio">
+        {% if relatorio == 'vendas_diarias' %}
+            <!-- Incluir aqui o código para o relatório de vendas diárias/mensais/anuais -->
+            <h3>Relatório de Vendas Diárias/Mensais/Anuais</h3>
+            <!-- Seu código para o relatório de vendas diárias/mensais/anuais aqui -->
+        {% elif relatorio == 'produtos_mais_vendidos' %}
+            <!-- Incluir aqui o código para o relatório de produtos mais vendidos -->
+            <h3>Relatório de Produtos Mais Vendidos</h3>
+            <!-- Seu código para o relatório de produtos mais vendidos aqui -->
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <script>
+        function togglePeriodoForm() {
+            console.log("Função togglePeriodoForm() acionada.");
+            var periodoForm = document.getElementById('periodoForm');
+            console.log("Valor de display atual:", periodoForm.style.display);
+            if (periodoForm.style.display === 'none') {
+                console.log("Mostrando o formulário...");
+                periodoForm.style.display = 'block';
+            } else {
+                console.log("Ocultando o formulário...");
+                periodoForm.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
