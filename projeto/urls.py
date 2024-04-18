@@ -43,6 +43,12 @@ urlpatterns = [
     path('buscar-produto-venda/', views.buscar_produto_venda, name='buscar_produto_venda'),
     path('vendas/buscar/', views.buscar_venda, name='buscar_venda'),
     path('vendas/relatorios', views.relatorios_vendas, name='relatorios_vendas'),
+
+    path('fornecedores/', views.fornecedores, name='fornecedores'),
+    path('fornecedores/criar', views.criar_fornecedor, name='criar_fornecedor'),
+    path('fornecedores/buscar', views.buscar_fornecedor, name='buscar_fornecedor'),
+    path('fornecedores/editar/', views.editar_fornecedor, name='editar_fornecedor'),
+    path('fornecedores/editar/<int:fornecedor_id>/', views.remover_fornecedor, name='remover_fornecedor'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

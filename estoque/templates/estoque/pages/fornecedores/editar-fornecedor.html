@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="pt-BR">
+<head>
+    {% include "estoque/partials/head.html" %}
+    <title>{% block title %}Editar Fornecedor | Estoque++{% endblock title %}</title>
+</head>
+
+<body>
+    {% include "estoque/partials/header.html" %}
+    {% include "estoque/partials/header-fornecedores.html" %}
+    
+    <h2 class="textos">Editar Fornecedor:</h2>
+
+    <div>
+        <form action="{% url 'editar_fornecedor' %}" method="POST" class="formulario-busca formulario-editar lexend-300">
+            {% csrf_token %}
+            <label for="fornecedor_id">Insira o ID do fornecedor para editar:</label>
+            <input type="text" id="fornecedor_id" name="fornecedor_id" required><br><br>
+            <button type="submit" class="lexend-300">Editar Fornecedor</button>
+        </form>
+    </div>
+
+    {% if sucesso %}
+        <div class="textos">
+            Dados atualizados com sucesso!
+        </div>
+    {% endif %}
+
+    {% if deletado %}
+        <div class="textos">
+            Fornecedor removido com sucesso!
+        </div>
+    {% endif %}
+
+    {% if fornecedor %}
+        <div>
+            <h3 class="textos">Dados do Fornecedor:</h3>
+            <div class="campo formulario-busca lexend-300">
+                <label for="fornecedor_id">ID:</label>
+                <input type="text" id="fornecedor_id" name="fornecedor_id" value="{{ fornecedor.id }}" readonly><br><br>
+            </div>
+            <form action="{% url 'editar_fornecedor' %}" method="POST" class="formulario-busca formulario-editar botao lexend-300">
+                {% csrf_token %}
+                <div class="campo">
+                    <input type="hidden" name="fornecedor_id_hidden" value="{{ fornecedor.id }}" class="formulario-busca lexend-300">
+
+                    <label for="nome">Nome:</label>
+                    <input type="text" id="nome" name="nome" value="{{ fornecedor.nome }}"><br><br>
+                    
+                    <label for="cnpj">CNPJ:</label>
+                    <input type="text" id="cnpj" name="cnpj" value="{{ fornecedor.cnpj }}"><br><br>
+
+                    <label for="email">Email:</label>
+                    <input type="text" id="email" name="email" value="{{ fornecedor.email }}"><br><br>
+
+                    <label for="telefone">Telefone:</label>
+                    <input type="text" id="telefone" name="telefone" value="{{ fornecedor.telefone }}"><br><br>
+
+                    <label for="endereco">Endereço:</label>
+                    <input type="text" id="endereco" name="endereco" value="{{ fornecedor.endereco }}"><br><br>
+
+                    <label for="cidade">Cidade:</label>
+                    <input type="text" id="cidade" name="cidade" value="{{ fornecedor.cidade }}"><br><br>
+
+                    <label for="estado">Estado:</label>
+                    <input type="text" id="estado" name="estado" value="{{ fornecedor.estado }}"><br><br>
+
+                    <label for="cep">CEP:</label>
+                    <input type="text" id="cep" name="cep" value="{{ fornecedor.cep }}"><br><br>
+
+                    <button type="submit" class="lexend-300 botao">Atualizar Dados</button>
+                </div>
+            </form>
+
+            <form action="{% url 'remover_fornecedor' fornecedor.id %}" method="POST" class="formulario-busca formulario-editar botao lexend-300">
+                {% csrf_token %}
+                <div class="campo">
+                    <input type="hidden" name="fornecedor_id_hidden" value="{{ fornecedor.id }}">
+                    <button type="submit" class="lexend-300 botao">Remover Fornecedor</button>
+                </div>
+            </form>
+        </div>
+    {% endif %}
+
+</body>
+</html>
+    
+</body>
+</html>
+

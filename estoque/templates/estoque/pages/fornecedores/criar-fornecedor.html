@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="pt-BR">
+<head>
+    {% include "estoque/partials/head.html" %}
+    <title>{% block title %}Criar Fornecedor | Estoque++{% endblock title %}</title>
+</head>
+
+<body>
+    {% include "estoque/partials/header.html" %}
+    {% include "estoque/partials/header-fornecedores.html" %}
+    
+    <h2 class="textos">Criar Fornecedor:</h2>
+
+    {% if mensagem %}
+        <p class="textos">{{ mensagem }}</p>
+    {% endif %}
+
+    <form action="/fornecedores/criar" method="post" class="formulario lexend-300">
+        {% csrf_token %}
+
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" name="nome" required><br><br>
+        
+        <label for="cnpj">CNPJ:</label>
+        <input type="text" id="cnpj" name="cnpj" required><br><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email"><br><br>
+
+        <label for="telefone">Telefone:</label>
+        <input type="text" id="telefone" name="telefone"><br><br>
+
+        <label for="endereco">Endereço:</label>
+        <input type="text" id="endereco" name="endereco"><br><br>
+
+        <label for="cidade">Cidade:</label>
+        <input type="text" id="cidade" name="cidade"><br><br>
+
+        <label for="estado">Estado:</label>
+        <input type="text" id="estado" name="estado"><br><br>
+
+        <label for="cep">CEP:</label>
+        <input type="text" id="cep" name="cep"><br><br>
+        
+        <button type="submit" class="lexend-300">Criar Fornecedor</button>
+    </form>
+
+</body>
+</html>

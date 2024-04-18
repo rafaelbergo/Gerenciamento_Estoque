@@ -2,7 +2,7 @@ import os
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from estoque.forms import BuscarClienteForm, BuscarVendaForm, VendaForm
-from estoque.models import Cliente, ItemVenda, Produto, Venda
+from estoque.models import Cliente, Fornecedor, ItemVenda, Produto, Venda
 from projeto import settings
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
@@ -421,3 +421,116 @@ def relatorios_vendas(request):
             # Lógica para gerar o relatório de produtos mais vendidos
             context['relatorio'] = 'produtos_mais_vendidos'
     return render(request, 'estoque/pages/vendas/relatorios-vendas.html', context)
+
+def fornecedores(request):
+    total_fornecedores = Fornecedor.objects.all().count()
+    context = {'total_fornecedores': total_fornecedores}
+    return render(request, 'estoque/pages/fornecedores/fornecedores.html', context)
+
+def criar_fornecedor(request):
+    mensagem = None
+    if request.method == 'POST':
+        # Obtém os dados do formulário
+        nome = request.POST.get('nome')
+        cnpj = request.POST.get('cnpj')
+        email = request.POST.get('email')
+        telefone = request.POST.get('telefone')
+        endereco = request.POST.get('endereco')
+        cidade = request.POST.get('cidade')
+        estado = request.POST.get('estado')
+        cep = request.POST.get('cep')
+        
+        if nome and cnpj:
+            novo_fornecedor = Fornecedor.objects.create(
+                nome=nome,
+                cnpj=cnpj,
+                email=email,
+                telefone=telefone,
+                endereco=endereco,
+                cidade=cidade,
+                estado=estado,
+                cep=cep
+            )
+            mensagem = "Fornecedor criado com sucesso!"
+        else:
+            mensagem = "Nome e CNPJ são campos obrigatórios."
+
+    return render(request, 'estoque/pages/fornecedores/criar-fornecedor.html', {'mensagem': mensagem})
+
+def buscar_fornecedor(request):
+    campo = request.GET.get('campo')
+    valor = request.GET.get('valor')
+
+    if campo == 'todos':
+        fornecedores = Fornecedor.objects.all()
+    else:
+        if campo and valor:
+            filtros = {
+                'id': Fornecedor.objects.filter(id=valor),
+                'nome': Fornecedor.objects.filter(nome__icontains=valor),
+                'cnpj': Fornecedor.objects.filter(cnpj__icontains=valor),
+                'email': Fornecedor.objects.filter(email__icontains=valor),
+                'telefone': Fornecedor.objects.filter(telefone__icontains=valor),
+                'endereco': Fornecedor.objects.filter(endereco__icontains=valor),
+                'cidade': Fornecedor.objects.filter(cidade__icontains=valor),
+                'estado': Fornecedor.objects.filter(estado__icontains=valor),
+                'cep': Fornecedor.objects.filter(cep__icontains=valor),
+            }
+            fornecedores = filtros.get(campo, [])
+     
+        else:
+            fornecedores = []
+
+    campos_opcoes = {
+        'todos': 'Todos os fornecedores',
+        'id': 'ID',
+        'nome': 'Nome',
+        'cnpj': 'CNPJ',
+        'email': 'E-mail',
+        'telefone': 'Telefone',
+        'endereco': 'Endereço',
+        'cidade': 'Cidade',
+        'estado': 'Estado',
+        'cep': 'CEP',    
+    }
+
+    contexto = {'fornecedores': fornecedores, 'campo': campo, 'valor': valor}
+
+    contexto['opcoes'] = campos_opcoes
+    contexto['campo'] = campo if campo in campos_opcoes else 'todos'
+
+    return render(request, 'estoque/pages/fornecedores/buscar-fornecedor.html', contexto)
+
+def editar_fornecedor(request):
+    fornecedor = None
+    sucesso = False
+    if request.method == 'POST':
+        fornecedor_id = request.POST.get('fornecedor_id')
+        if fornecedor_id:
+            fornecedor = get_object_or_404(Fornecedor, id=fornecedor_id)
+        else:
+            fornecedor_id = request.POST.get('fornecedor_id_hidden')
+            fornecedor = get_object_or_404(Fornecedor, id=fornecedor_id)
+            fornecedor.nome = request.POST.get('nome')
+            fornecedor.email = request.POST.get('email')
+            fornecedor.cnpj = request.POST.get('cnpj')
+            fornecedor.telefone = request.POST.get('telefone')
+            fornecedor.endereco = request.POST.get('endereco')
+            fornecedor.cidade = request.POST.get('cidade')
+            fornecedor.estado = request.POST.get('estado')
+            fornecedor.cep = request.POST.get('cep')
+            fornecedor.save()
+            sucesso = True
+            fornecedor = None
+
+    return render(request, 'estoque/pages/fornecedores/editar-fornecedor.html', {'fornecedor': fornecedor, 'sucesso': sucesso})
+
+def remover_fornecedor(request, fornecedor_id):
+    deletado = False
+
+    if request.method == 'POST':
+        fornecedor = get_object_or_404(Fornecedor, id=fornecedor_id)
+        fornecedor.delete()
+        deletado = True
+
+    return render(request, 'estoque/pages/fornecedores/editar-fornecedor.html', {'deletado': deletado})

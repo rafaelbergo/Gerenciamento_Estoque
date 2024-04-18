@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="pt-BR">
+<head>
+    {% include "estoque/partials/head.html" %}
+    <title>{% block title %}Buscar Fornecedor | Estoque++{% endblock title %}</title>
+</head>
+
+<body>
+    {% include "estoque/partials/header.html" %}
+    {% include "estoque/partials/header-fornecedores.html" %}
+
+    <h2 class="textos">Buscar Fornecedor:</h2>
+
+    <div class="formulario-busca lexend-300">
+        <form method="GET" action="{% url 'buscar_fornecedor' %}">
+            <select name="campo" id="campo">
+                {% for campo_opcao, label in opcoes.items %}
+                    <option value="{{ campo_opcao }}" {% if campo == campo_opcao %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+            <label for="valor">Valor:</label>
+            <input type="text" id="valor" name="valor">
+            <button type="submit" class="lexend-300">Buscar</button>
+        </form>
+    </div>
+
+    {% if fornecedores %}
+        <h3 class="resultado">Resultados da busca:</h3>
+        <table class="tabela">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>CNPJ</th>
+                    <th>Email</th>
+                    <th>Telefone</th>
+                    <th>Endereço</th>
+                    <th>Cidade</th>
+                    <th>Estado</th>
+                    <th>CEP</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for fornecedor in fornecedores %}
+                <tr>
+                    <td>{{ fornecedor.id }}</td>
+                    <td>{{ fornecedor.nome }}</td>
+                    <td>{{ fornecedor.cnpj }}</td>
+                    <td>{{ fornecedor.email }}</td>
+                    <td>{{ fornecedor.telefone }}</td>
+                    <td>{{ fornecedor.endereco }}</td>
+                    <td>{{ fornecedor.cidade }}</td>
+                    <td>{{ fornecedor.estado }}</td>
+                    <td>{{ fornecedor.cep }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="textos">Nenhum fornecedor encontrado.</p>
+    {% endif %}
+
+</body>
+</html>
