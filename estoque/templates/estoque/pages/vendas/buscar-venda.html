@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="pt-BR">
+<head>
+    {% include "estoque/partials/head.html" %}
+    <title>{% block title %}Buscar Venda | Estoque++{% endblock title %}</title>
+</head>
+
+<body>
+    {% include "estoque/partials/header.html" %}
+    {% include "estoque/partials/header-vendas.html" %}
+
+    <h2 class="textos">Buscar Venda:</h2>
+
+    <div class="formulario-busca lexend-300">
+        <form method="GET" action="{% url 'buscar_venda' %}">
+            <select name="campo" id="campo">
+                {% for campo_opcao, label in opcoes %}
+                    <option value="{{ campo_opcao }}" {% if campo == campo_opcao %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+            <label for="valor">Valor:</label>
+            <input type="text" id="valor" name="valor">
+            <button type="submit" class="lexend-300">Buscar</button>
+        </form>
+    </div>
+
+    {% if vendas %}
+    <div class="resultado">
+        <table class="tabela">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Data</th>
+                    <th>Cliente</th>
+                    <th>CPF</th>
+                    <th>Telefone</th>
+                    <th>Endereço</th>
+                    <th>CEP</th>
+                    <th>Estado</th>
+                    <th>Nome Produto</th>
+                    <th>Quantidade Produto</th>
+                    <th>Preço Produto</th>
+                    <th>Preço Final</th>
+                    <th>Forma de Pagamento</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for venda in vendas %}
+                <tr>
+                    <td>{{ venda.id }}</td>
+                    <td>{{ venda.data }}</td>
+                    <td>{{ venda.cliente.nome }}</td>
+                    <td>{{ venda.cliente.cpf }}</td>
+                    <td>{{ venda.cliente.telefone }}</td>
+                    <td>{{ venda.cliente.endereco }}</td>
+                    <td>{{ venda.cliente.cep }}</td>
+                    <td>{{ venda.cliente.estado }}</td>
+                    <td>
+                        <ul class="listas">
+                            {% for item in venda.itemvenda_set.all %}
+                            <li>{{ item.produto.nome }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    <td>
+                        <ul class="listas">
+                            {% for item in venda.itemvenda_set.all %}
+                            <li>{{ item.quantidade }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    <td>
+                        <ul class="listas">
+                            {% for item in venda.itemvenda_set.all %}
+                            <li>{{ item.produto.preco }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    <td>{{ venda.preco_final }}</td>
+                    <td>{{ venda.forma_pagamento }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="textos">Nenhuma venda encontrada.</p>
+    {% endif %}
+
+</body>
+</html>

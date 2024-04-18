@@ -1,11 +1,13 @@
 import os
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from estoque.forms import BuscarClienteForm, VendaForm
+from estoque.forms import BuscarClienteForm, BuscarVendaForm, VendaForm
 from estoque.models import Cliente, ItemVenda, Produto, Venda
 from projeto import settings
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
+from django.db.models import Q
+
 
 def home(request):
     context = {}
@@ -371,3 +373,41 @@ def criar_venda(request):
         return render(request, 'estoque/pages/vendas/criar-venda.html', {'form': form})
     else:
         return render(request, 'estoque/pages/vendas/criar-venda.html', {'form': form})
+    
+
+def calcular_preco_final(venda):
+    total = 0
+    for item in venda.itemvenda_set.all():
+        total += item.quantidade * item.produto.preco
+    if venda.desconto:
+        total -= total * (venda.desconto / 100)
+    return round(total, 2)
+
+
+def buscar_venda(request):
+    form = BuscarVendaForm(request.GET)
+    vendas = []
+
+    if form.is_valid():
+        campo = form.cleaned_data['campo']
+        valor = form.cleaned_data['valor']
+
+        if campo == 'todos':
+            vendas = Venda.objects.all().prefetch_related('itemvenda_set')
+        else:
+            if campo and valor:
+                filtros = {
+                    'id': Venda.objects.filter(id=valor),
+                    'cpf': Venda.objects.filter(cliente__cpf__icontains=valor),
+                    'data': Venda.objects.filter(data__icontains=valor),
+                    'forma_pagamento': Venda.objects.filter(forma_pagamento__icontains=valor),
+                }
+                vendas = filtros.get(campo, []).prefetch_related('itemvenda_set')
+
+    for venda in vendas:
+        venda.preco_final = calcular_preco_final(venda)
+
+    contexto = {'form': form, 'vendas': vendas, 'opcoes': form.fields['campo'].choices}
+
+    return render(request, 'estoque/pages/vendas/buscar-venda.html', contexto)
+

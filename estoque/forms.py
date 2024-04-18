@@ -45,3 +45,13 @@ class VendaForm(forms.Form):
         ('CARTAO', 'Cartão'),
     )
     forma_pagamento = forms.ChoiceField(label='Forma de Pagamento', choices=opcoes_pagamento)
+
+class BuscarVendaForm(forms.Form):
+    campo = forms.ChoiceField(choices=[
+        ('todos', 'Todas as vendas'),
+        ('id', 'ID'),
+        ('cpf', 'CPF do Cliente'),
+        ('data', 'Data'),
+        ('forma_pagamento', 'Forma de Pagamento'),
+    ])
+    valor = forms.CharField(required=False)
