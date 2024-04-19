@@ -1,9 +1,27 @@
 <header>
     <nav class="main-header">
-    <a href="/" class="permanent-marker-regular"><img src="{% load static %}{% static '/estoque/img/logo.png' %}" class="logo" alt="Estoque">Estoque++</a>
-    <a href="/produtos" class="sora-700">Produtos</a>
-    <a href="/vendas" class="sora-700">Vendas</a>
-    <a href="/clientes" class="sora-700">Clientes</a>
-    <a href="/fornecedores" class="sora-700">Fornecedores</a>
+        <a href="/" class="permanent-marker-regular"><img src="{% load static %}{% static '/estoque/img/logo.png' %}" class="logo" alt="Estoque">Estoque++</a>
+        <a href="/produtos" class="sora-700">Produtos</a>
+        <a href="/vendas" class="sora-700">Vendas</a>
+        <a href="/clientes" class="sora-700">Clientes</a>
+        <a href="/fornecedores" class="sora-700">Fornecedores</a>
+        <span id="data-hora" class="data-hora sora-700">{{ data_hora }}</span>
+
     </nav>
 </header>
+
+<script>
+    function mostrarDataHora() {
+        var agora = new Date();
+        var horaMinutos = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }); // Obtém apenas a hora e os minutos
+        var data = agora.toLocaleDateString('pt-BR'); // Obtém a data
+        
+        var dataHoraFormatada = data + ' ' + horaMinutos; // Concatena a data e a hora
+        document.getElementById('data-hora').textContent = dataHoraFormatada; // Define o texto do elemento como a data e hora
+    }
+
+    mostrarDataHora(); // Mostrar a data e hora quando a página carregar
+
+    // Atualizar a cada minuto
+    setInterval(mostrarDataHora, 60000); // Atualiza a cada minuto
+</script>

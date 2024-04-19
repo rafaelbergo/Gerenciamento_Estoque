@@ -11,8 +11,9 @@
 }
 
 .main-header {
+    display: flex; /* Torna o container um flex container */
+    align-items: center; /* Alinha verticalmente os itens ao centro */
     background-color: rgb(107, 153, 223);
-    padding: 10px;
     padding-left: 20px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.87);
 }
@@ -242,6 +243,12 @@ body {
     font-family: "Permanent Marker", cursive;
     font-weight: 400;
     font-style: normal;
+}
+
+.data-hora {
+    margin-left: auto;
+    padding-right: 10px;
+    color: rgba(255, 255, 255, 0.87);
 }
 
 .sora-700{ /* fonte dos itens do header */
