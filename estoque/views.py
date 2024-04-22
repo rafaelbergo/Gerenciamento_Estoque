@@ -419,9 +419,7 @@ def relatorios_vendas(request):
         print("Conteúdo do request.POST:", request.POST)  # Adicionando um print para visualizar o conteúdo do request.POST
 
         periodo = request.POST.get('periodo')
-        relatorio_tipo = request.POST.get('relatorio_tipo')  # Verifique se o nome do campo corresponde ao HTML
-        print("Tipo de relatório:", relatorio_tipo)  # Adicione isso para imprimir o tipo de relatório
-        print("Período selecionado:", periodo)  # Adicione isso para imprimir o período selecionado
+        relatorio_tipo = request.POST.get('relatorio_tipo') 
 
         if periodo:
             if relatorio_tipo == 'vendas_diarias':

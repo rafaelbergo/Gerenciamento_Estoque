@@ -93,6 +93,7 @@
     {% elif relatorio_tipo == 'produtos_mais_vendidos' %}
     <h3>Relatório de Produtos Mais Vendidos</h3>
     <div class="relatorio tabela">
+        {% if relatorio %}
         <h4>Produtos Mais Vendidos no Período</h4>
         <table>
             <thead>
@@ -104,12 +105,16 @@
             <tbody>
                 {% for produto in relatorio %}
                 <tr>
-                    <td>{{ produto.produto__nome }}</td>
-                    <td>{{ produto.total_vendas }}</td>
+                    <td>{{ produto.nome }}</td>
+                    <td>{{ produto.total_vendido }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
+        {% else %}
+        <p class="textos">Nenhum produto encontrado no período solicitado.</p>     
+
+        {% endif %}
     </div>
     {% endif %}
 
