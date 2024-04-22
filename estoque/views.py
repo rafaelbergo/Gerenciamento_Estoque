@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from estoque.forms import BuscarClienteForm, BuscarVendaForm, VendaForm
 from estoque.models import Cliente, Fornecedor, ItemVenda, Produto, Venda
+
 from projeto import settings
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
@@ -129,6 +130,7 @@ def criar_produto(request):
         nome = request.POST.get('nome')
         preco = request.POST.get('preco')
         quantidade = request.POST.get('quantidade')
+        fornecedor_cnpj = request.POST.get('fornecedor')
         descricao = request.POST.get('descricao')
         categoria = request.POST.get('categoria')
         marca = request.POST.get('marca')
@@ -145,6 +147,11 @@ def criar_produto(request):
                 marca=marca,
                 modelo=modelo,
             )
+
+            if fornecedor_cnpj:
+                fornecedor, _ = Fornecedor.objects.get_or_create(cnpj=fornecedor_cnpj)
+                novo_produto.fornecedor = fornecedor
+                novo_produto.save()
 
             if imagem:
                 filename, extension = os.path.splitext(imagem.name)
@@ -216,11 +223,16 @@ def editar_produto(request):
             produto.nome = request.POST.get('nome')
             produto.preco = request.POST.get('preco')
             produto.quantidade = request.POST.get('quantidade')
+            fornecedor_cnpj = request.POST.get('fornecedor')
             produto.descricao = request.POST.get('descricao')
             produto.categoria = request.POST.get('categoria')
             produto.marca = request.POST.get('marca')
             produto.modelo = request.POST.get('modelo')
             imagem = request.FILES.get('imagem')
+
+            if fornecedor_cnpj:
+                fornecedor, _ = Fornecedor.objects.get_or_create(cnpj=fornecedor_cnpj)
+                produto.fornecedor = fornecedor
 
             if imagem:
                 if produto.imagem: # Verifica se existe uma imagem

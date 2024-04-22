@@ -34,6 +34,7 @@
                     <th>Nome</th>
                     <th>Preço</th>
                     <th>Quantidade</th>
+                    <th>CNPJ do Fornecedor</th>
                     <th>Descrição</th>
                     <th>Categoria</th>
                     <th>Marca</th>
@@ -48,6 +49,13 @@
                     <td>{{ produto.nome }}</td>
                     <td>{{ produto.preco }}</td>
                     <td>{{ produto.quantidade }}</td>
+                    <td>
+                        {% if produto.fornecedor %}
+                            {{ produto.fornecedor.cnpj }}
+                        {% else %}
+                            Sem fornecedor
+                        {% endif %}
+                    </td>
                     <td>{{ produto.descricao }}</td>
                     <td>{{ produto.categoria }}</td>
                     <td>{{ produto.marca }}</td>

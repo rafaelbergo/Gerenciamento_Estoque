@@ -54,6 +54,9 @@
                     <label for="quantidade">Quantidade:</label>
                     <input type="text" id="quantidade" name="quantidade" value="{{ produto.quantidade }}"><br><br>
 
+                    <label for="fornecedor">CNPJ do Fornecedor:</label><br>
+                    <input type="text" id="fornecedor" name="fornecedor" maxlength="18" value="{% if produto.fornecedor %}{{ produto.fornecedor.cnpj }}{% endif %}"><br><br>
+                    
                     <label for="descricao">Descrição:</label>
                     <input type="text" id="descricao" name="descricao" value="{{ produto.descricao }}"><br><br>
 
