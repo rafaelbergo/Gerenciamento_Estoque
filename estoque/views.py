@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 import os
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -7,6 +8,7 @@ from projeto import settings
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from django.db.models import Q
+from django.db.models import Sum
 
 
 def home(request):
@@ -414,13 +416,33 @@ def buscar_venda(request):
 def relatorios_vendas(request):
     context = {}
     if request.method == 'POST':
-        if 'vendas_diarias' in request.POST:
-            # Lógica para gerar o relatório de vendas diárias/mensais/anuais
-            context['relatorio'] = 'vendas_diarias'
-        elif 'produtos_mais_vendidos' in request.POST:
-            # Lógica para gerar o relatório de produtos mais vendidos
-            context['relatorio'] = 'produtos_mais_vendidos'
+        periodo = request.POST.get('periodo')
+        if periodo:
+            context['relatorio_tipo'] = 'vendas_diarias'
+            vendas_queryset = calcular_relatorio(periodo)  # Obtendo a queryset de vendas
+            quantidade_vendas = vendas_queryset.count() if vendas_queryset else 0
+            context['relatorio'] = vendas_queryset
+            context['quantidade_vendas'] = quantidade_vendas
+            
     return render(request, 'estoque/pages/vendas/relatorios-vendas.html', context)
+
+def calcular_relatorio(periodo):
+    data_atual = datetime.now().date()
+    if periodo == 'dia_atual':
+        vendas = Venda.objects.filter(data=data_atual).annotate(total_vendas=Sum('valor'))
+    elif periodo == 'ultimos_7_dias':
+        data_inicio = data_atual - timedelta(days=7)
+        vendas = Venda.objects.filter(data__range=[data_inicio, data_atual]).annotate(total_vendas=Sum('valor'))
+    elif periodo == 'ultimos_30_dias':
+        data_inicio = data_atual - timedelta(days=30)
+        vendas = Venda.objects.filter(data__range=[data_inicio, data_atual]).annotate(total_vendas=Sum('valor'))
+    elif periodo == 'ultimos_365_dias':
+        data_inicio = data_atual - timedelta(days=365)
+        vendas = Venda.objects.filter(data__range=[data_inicio, data_atual]).annotate(total_vendas=Sum('valor'))
+    else:
+        vendas = Venda.objects.none()
+    return vendas
+
 
 def fornecedores(request):
     total_fornecedores = Fornecedor.objects.all().count()
