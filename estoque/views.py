@@ -559,13 +559,14 @@ def buscar_fornecedor(request):
 def editar_fornecedor(request):
     fornecedor = None
     sucesso = False
+    mensagem  = False
     if request.method == 'POST':
         cnpj = request.POST.get('cnpj')
         if cnpj:
             try:
                 fornecedor = Fornecedor.objects.get(cnpj=cnpj)
             except Fornecedor.DoesNotExist:
-                print("Fornecedor com CNPJ {} não encontrado.".format(cnpj))  # Adicionando um print para indicar que o fornecedor não foi encontrado
+                mensagem = True
             nome = request.POST.get('nome')
             if nome:
                 fornecedor.nome = nome
@@ -578,12 +579,10 @@ def editar_fornecedor(request):
                 fornecedor.save()
                 sucesso = True
                 fornecedor = None
-            else:
-                print("Nome não recebido no formulário.")  # Adicionando um print para indicar que o nome não foi recebido no formulário
         else:
-            print("CNPJ não recebido no formulário.")  # Adicionando um print para indicar que o CNPJ não foi recebido no formulário
+            mensagem = True
 
-    return render(request, 'estoque/pages/fornecedores/editar-fornecedor.html', {'fornecedor': fornecedor, 'sucesso': sucesso})
+    return render(request, 'estoque/pages/fornecedores/editar-fornecedor.html', {'fornecedor': fornecedor, 'sucesso': sucesso, 'mensagem': mensagem})
 
 def remover_fornecedor(request, fornecedor_id):
     deletado = False
