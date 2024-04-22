@@ -15,8 +15,8 @@
     <div>
         <form action="{% url 'editar_fornecedor' %}" method="POST" class="formulario-busca formulario-editar lexend-300">
             {% csrf_token %}
-            <label for="fornecedor_id">Insira o ID do fornecedor para editar:</label>
-            <input type="text" id="fornecedor_id" name="fornecedor_id" required><br><br>
+            <label for="cnpj">Insira o CNPJ do fornecedor para editar:</label>
+            <input type="text" id="cnpj" name="cnpj" required><br><br>
             <button type="submit" class="lexend-300">Editar Fornecedor</button>
         </form>
     </div>
@@ -37,8 +37,8 @@
         <div>
             <h3 class="textos">Dados do Fornecedor:</h3>
             <div class="campo formulario-busca lexend-300">
-                <label for="fornecedor_id">ID:</label>
-                <input type="text" id="fornecedor_id" name="fornecedor_id" value="{{ fornecedor.id }}" readonly><br><br>
+                <label for="fornecedor_id">CNPJ:</label>
+                <input type="text" id="fornecedor_id" name="fornecedor_id" value="{{ fornecedor.cnpj }}" readonly><br><br>
             </div>
             <form action="{% url 'editar_fornecedor' %}" method="POST" class="formulario-busca formulario-editar botao lexend-300">
                 {% csrf_token %}
@@ -48,9 +48,6 @@
                     <label for="nome">Nome:</label>
                     <input type="text" id="nome" name="nome" value="{{ fornecedor.nome }}"><br><br>
                     
-                    <label for="cnpj">CNPJ:</label>
-                    <input type="text" id="cnpj" name="cnpj" value="{{ fornecedor.cnpj }}"><br><br>
-
                     <label for="email">Email:</label>
                     <input type="text" id="email" name="email" value="{{ fornecedor.email }}"><br><br>
 
@@ -85,7 +82,3 @@
 
 </body>
 </html>
-    
-</body>
-</html>
-

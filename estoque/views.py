@@ -560,23 +560,28 @@ def editar_fornecedor(request):
     fornecedor = None
     sucesso = False
     if request.method == 'POST':
-        fornecedor_id = request.POST.get('fornecedor_id')
-        if fornecedor_id:
-            fornecedor = get_object_or_404(Fornecedor, id=fornecedor_id)
+        cnpj = request.POST.get('cnpj')
+        if cnpj:
+            try:
+                fornecedor = Fornecedor.objects.get(cnpj=cnpj)
+            except Fornecedor.DoesNotExist:
+                print("Fornecedor com CNPJ {} não encontrado.".format(cnpj))  # Adicionando um print para indicar que o fornecedor não foi encontrado
+            nome = request.POST.get('nome')
+            if nome:
+                fornecedor.nome = nome
+                fornecedor.email = request.POST.get('email')
+                fornecedor.telefone = request.POST.get('telefone')
+                fornecedor.endereco = request.POST.get('endereco')
+                fornecedor.cidade = request.POST.get('cidade')
+                fornecedor.estado = request.POST.get('estado')
+                fornecedor.cep = request.POST.get('cep')
+                fornecedor.save()
+                sucesso = True
+                fornecedor = None
+            else:
+                print("Nome não recebido no formulário.")  # Adicionando um print para indicar que o nome não foi recebido no formulário
         else:
-            fornecedor_id = request.POST.get('fornecedor_id_hidden')
-            fornecedor = get_object_or_404(Fornecedor, id=fornecedor_id)
-            fornecedor.nome = request.POST.get('nome')
-            fornecedor.email = request.POST.get('email')
-            fornecedor.cnpj = request.POST.get('cnpj')
-            fornecedor.telefone = request.POST.get('telefone')
-            fornecedor.endereco = request.POST.get('endereco')
-            fornecedor.cidade = request.POST.get('cidade')
-            fornecedor.estado = request.POST.get('estado')
-            fornecedor.cep = request.POST.get('cep')
-            fornecedor.save()
-            sucesso = True
-            fornecedor = None
+            print("CNPJ não recebido no formulário.")  # Adicionando um print para indicar que o CNPJ não foi recebido no formulário
 
     return render(request, 'estoque/pages/fornecedores/editar-fornecedor.html', {'fornecedor': fornecedor, 'sucesso': sucesso})
 
