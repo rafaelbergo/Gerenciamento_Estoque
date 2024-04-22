@@ -416,17 +416,28 @@ def buscar_venda(request):
 def relatorios_vendas(request):
     context = {}
     if request.method == 'POST':
+        print("Conteúdo do request.POST:", request.POST)  # Adicionando um print para visualizar o conteúdo do request.POST
+
         periodo = request.POST.get('periodo')
+        relatorio_tipo = request.POST.get('relatorio_tipo')  # Verifique se o nome do campo corresponde ao HTML
+        print("Tipo de relatório:", relatorio_tipo)  # Adicione isso para imprimir o tipo de relatório
+        print("Período selecionado:", periodo)  # Adicione isso para imprimir o período selecionado
+
         if periodo:
-            context['relatorio_tipo'] = 'vendas_diarias'
-            vendas_queryset = calcular_relatorio(periodo)  # Obtendo a queryset de vendas
-            quantidade_vendas = vendas_queryset.count() if vendas_queryset else 0
-            context['relatorio'] = vendas_queryset
-            context['quantidade_vendas'] = quantidade_vendas
-            
+            if relatorio_tipo == 'vendas_diarias':
+                vendas_queryset = calcular_relatorio_vendas(periodo)  # Obtendo a queryset de vendas
+                quantidade_vendas = vendas_queryset.count() if vendas_queryset else 0
+                context['relatorio_tipo'] = 'vendas_diarias'
+                context['relatorio'] = vendas_queryset
+                context['quantidade_vendas'] = quantidade_vendas
+            elif relatorio_tipo == 'produtos_mais_vendidos':
+                produtos_queryset = calcular_relatorio_produtos_mais_vendidos(periodo)  # Obtendo a queryset de produtos mais vendidos
+                context['relatorio_tipo'] = 'produtos_mais_vendidos'
+                context['relatorio'] = produtos_queryset
     return render(request, 'estoque/pages/vendas/relatorios-vendas.html', context)
 
-def calcular_relatorio(periodo):
+
+def calcular_relatorio_vendas(periodo):
     data_atual = datetime.now().date()
     if periodo == 'dia_atual':
         vendas = Venda.objects.filter(data=data_atual).annotate(total_vendas=Sum('valor'))
@@ -442,6 +453,30 @@ def calcular_relatorio(periodo):
     else:
         vendas = Venda.objects.none()
     return vendas
+
+def calcular_relatorio_produtos_mais_vendidos(periodo):
+    data_atual = datetime.now().date()
+    produtos_mais_vendidos = None
+    
+    if periodo == 'dia_atual':
+        data_inicio = data_atual
+    elif periodo == 'ultimos_7_dias':
+        data_inicio = data_atual - timedelta(days=7)
+    elif periodo == 'ultimos_30_dias':
+        data_inicio = data_atual - timedelta(days=30)
+    elif periodo == 'ultimos_365_dias':
+        data_inicio = data_atual - timedelta(days=365)
+    else:
+        data_inicio = None
+    
+    if data_inicio:
+        # Consulta para obter os produtos mais vendidos no período fornecido
+        produtos_mais_vendidos = Produto.objects.filter(itemvenda__venda__data__range=[data_inicio, data_atual]) \
+                                                 .annotate(total_vendido=Sum('itemvenda__quantidade')) \
+                                                 .order_by('-total_vendido') \
+                                                 .values('id', 'nome', 'total_vendido')
+    
+    return produtos_mais_vendidos
 
 
 def fornecedores(request):

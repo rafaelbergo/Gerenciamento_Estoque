@@ -20,18 +20,25 @@
     <div class="formulario" style="display: flex; justify-content: space-between;">
         <form method="post" action="{% url 'relatorios_vendas' %}">
             {% csrf_token %}
-            <button type="button" name="vendas_diarias" class="lexend-300" style="width: 180px;" onclick="togglePeriodoForm()">Relatório de Vendas Por Período</button>
+            <input type="hidden" name="relatorio_tipo" value="vendas_diarias">
+            <button type="button" class="lexend-300" style="width: 180px;" onclick="toggleAndSubmitForm('periodoFormVendas')">Relatório de Vendas Por Período</button>
+
         </form>
         
         <form method="post" style="margin-left: 15px;">
             {% csrf_token %}
-            <button type="submit" name="produtos_mais_vendidos" class="lexend-300" style="width: 180px;">Relatório de Produtos Mais Vendidos</button>
+            <input type="hidden" name="relatorio_tipo" value="produtos_mais_vendidos">
+            <button type="button" class="lexend-300" style="width: 180px;" onclick="toggleAndSubmitForm('periodoFormProdutos')">Relatório de Produtos Mais Vendidos</button>
+
         </form>
     </div>
 
-    <div class="opcoes-relatorio" id="periodoForm" style="display: none; padding: 20px;">
+
+    <div class="opcoes-relatorio" id="periodoFormVendas" style="display: none; padding: 20px;">
         <form method="post" action="{% url 'relatorios_vendas' %}">
             {% csrf_token %}
+            <input type="hidden" name="relatorio_tipo" value="vendas_diarias">
+
             <select name="periodo" class="lexend-300">
                 <option value="dia_atual">Dia Atual</option>
                 <option value="ultimos_7_dias">Últimos 7 Dias</option>
@@ -41,54 +48,83 @@
             <button type="submit" name="geral_relatorio" class="lexend-300">Gerar Relatório</button>
         </form>
     </div>
-
-    {% if relatorio != 'geral_relatorio' %}
-    <div class="relatorio">
-        {% if relatorio_tipo == 'vendas_diarias' %}
-            <h3>Relatório de Vendas Diárias/Mensais/Anuais</h3>
-            <div class="relatorio tabela">
-                <h4>Total de Vendas: {{ quantidade_vendas }}</h4>
-                {% if quantidade_vendas > 0 %}
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Data</th>
-                            <th>Cliente</th>
-                            <th>Valor Total da Venda</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for venda in relatorio %}
-                        <tr>
-                            <td>{{ venda.data }}</td>
-                            <td>{{ venda.cliente.nome }}</td>
-                            <td>{{ venda.total_vendas }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-                {% endif %}
-            </div>
-        {% elif relatorio_tipo == 'produtos_mais_vendidos' %}
-            <!-- Incluir aqui o código para o relatório de produtos mais vendidos -->
-            <h3>Relatório de Produtos Mais Vendidos</h3>
-            <!-- Seu código para o relatório de produtos mais vendidos aqui -->
-        {% endif %}
+    
+    <div class="opcoes-relatorio" id="periodoFormProdutos" style="display: none; padding: 20px;">
+        <form method="post" action="{% url 'relatorios_vendas' %}">
+            {% csrf_token %}
+            <input type="hidden" name="relatorio_tipo" value="produtos_mais_vendidos">
+            <select name="periodo" class="lexend-300">
+                <option value="dia_atual">Dia Atual</option>
+                <option value="ultimos_7_dias">Últimos 7 Dias</option>
+                <option value="ultimos_30_dias">Últimos 30 Dias</option>
+                <option value="ultimos_365_dias">Últimos 365 Dias</option>
+            </select>
+            <button type="submit" name="produtos_mais_vendidos" class="lexend-300">Gerar Relatório</button>
+        </form>
     </div>
+    
 
+    {% if relatorio_tipo == 'vendas_diarias' %}
+        <h3 class="tabela">Relatório de Vendas Diárias/Mensais/Anuais</h3>
+        <div class="relatorio tabela">
+            <h4>Total de Vendas: {{ quantidade_vendas }}</h4>
+            {% if quantidade_vendas > 0 %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Cliente</th>
+                        <th>Valor Total da Venda</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for venda in relatorio %}
+                    <tr>
+                        <td>{{ venda.data }}</td>
+                        <td>{{ venda.cliente.nome }}</td>
+                        <td>{{ venda.total_vendas }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+        </div>
+    
+    {% elif relatorio_tipo == 'produtos_mais_vendidos' %}
+    <h3>Relatório de Produtos Mais Vendidos</h3>
+    <div class="relatorio tabela">
+        <h4>Produtos Mais Vendidos no Período</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th>Produto</th>
+                    <th>Total de Vendas</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for produto in relatorio %}
+                <tr>
+                    <td>{{ produto.produto__nome }}</td>
+                    <td>{{ produto.total_vendas }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
     {% endif %}
 
+
     <script>
-        function togglePeriodoForm() {
-            console.log("Função togglePeriodoForm() acionada.");
-            var periodoForm = document.getElementById('periodoForm');
-            console.log("Valor de display atual:", periodoForm.style.display);
-            if (periodoForm.style.display === 'none') {
-                console.log("Mostrando o formulário...");
-                periodoForm.style.display = 'block';
+        function toggleAndSubmitForm(formId) {
+            var formulario = document.getElementById(formId);
+            if (formulario) {
+                if (formulario.style.display === 'none') {
+                    formulario.style.display = 'block';
+                } else {
+                    formulario.style.display = 'none';
+                }
             } else {
-                console.log("Ocultando o formulário...");
-                periodoForm.style.display = 'none';
+                console.log("Formulário não encontrado com ID:", formId);
             }
         }
     </script>
