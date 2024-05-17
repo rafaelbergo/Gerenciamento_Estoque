@@ -1,4 +1,4 @@
-# Projeto_Estoque
+# Estoque++
 O Sistema de Gerenciamento de Estoque é um software desenvolvido em Python utilizando o Django como framework e o MySQL como banco de dados. O principal objetivo deste projeto é auxiliar empresas de todos os tamanhos no controle eficiente de seus produtos em estoque, automatizando processos e facilitando a gestão de mercadorias.
 
 
