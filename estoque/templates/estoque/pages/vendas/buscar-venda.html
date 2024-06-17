@@ -42,6 +42,7 @@
                     <th>Quantidade Produto</th>
                     <th>Preço Produto</th>
                     <th>Preço Final</th>
+                    <th>Desconto</th>
                     <th>Forma de Pagamento</th>
                 </tr>
             </thead>
@@ -78,6 +79,7 @@
                         </ul>
                     </td>
                     <td>{{ venda.preco_final }}</td>
+                    <td>{{ venda.desconto }}</td>
                     <td>{{ venda.forma_pagamento }}</td>
                 </tr>
                 {% endfor %}
