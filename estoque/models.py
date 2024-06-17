@@ -2,7 +2,7 @@ from django.db import models
 
 class Produto(models.Model):
     nome = models.CharField(max_length=45, blank=False)
-    preco = models.DecimalField(max_digits=5, decimal_places=2, blank=False)
+    preco = models.DecimalField(max_digits=9, decimal_places=2, blank=False)
     quantidade = models.IntegerField(blank=False)
     descricao = models.TextField(max_length=100, blank=True)
     categoria = models.TextField(max_length=60, blank=True)
@@ -57,4 +57,4 @@ class ItemVenda(models.Model):
     venda = models.ForeignKey('Venda', on_delete=models.CASCADE)
     produto = models.ForeignKey('Produto', on_delete=models.CASCADE)
     quantidade = models.IntegerField(blank=False)
-    valor_unitario = models.DecimalField(max_digits=5, decimal_places=2, blank=False)
+    valor_unitario = models.DecimalField(max_digits=9, decimal_places=2, blank=False)
